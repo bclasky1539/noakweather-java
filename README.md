@@ -1,4 +1,4 @@
-# noakweather
+# noakweather-java
 noakweather project
 
 This Java library provides a Metar and TAF decoder.
