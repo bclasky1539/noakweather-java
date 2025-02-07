@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>noakweather</groupId>
-    <artifactId>noakweather</artifactId>
+    <groupId>noakweather-java</groupId>
+    <artifactId>noakweather-java</artifactId>
     <version>0.1</version>
-    <name>noakweather</name>
-    <description>noakweather is a Java library for parsing raw weather data (e.g. METAR, TAF).</description>
+    <name>noakweather-java</name>
+    <description>noakweather-java is a Java library for parsing raw weather data (e.g. METAR, TAF).</description>
     <packaging>jar</packaging>
     <licenses>
         <license>
