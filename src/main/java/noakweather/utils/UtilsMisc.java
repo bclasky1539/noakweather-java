@@ -435,6 +435,24 @@ public class UtilsMisc {
     }
 
     /**
+     * Check for repeating character in string
+     *
+     * @param input
+     * @param character
+     * @param minOccurrences
+     * @return if string contains character
+     */
+    public static boolean containsRepeatedCharacter(String input, char character, int minOccurrences) {
+        // Escape special regex characters
+        String escapedChar = Pattern.quote(String.valueOf(character));
+
+        // Create pattern for n or more occurrences
+        String pattern = ".*" + escapedChar + "{" + minOccurrences + ",}.*";
+
+        return input.matches(pattern);
+    }
+
+    /**
      *
      * Beep!
      *

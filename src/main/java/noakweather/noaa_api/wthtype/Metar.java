@@ -208,7 +208,8 @@ public class Metar extends AviaWeath {
         }
 
         if (getPressure() != null) {
-            if (getPressure().getPressure() == null) {
+            if (getPressure().getPressure() == null
+                    || getPressure().getPressure() == -1.0) {
                 System.out.println(
                         "\nPressure   : The pressure cannot be determined");
             } else {
