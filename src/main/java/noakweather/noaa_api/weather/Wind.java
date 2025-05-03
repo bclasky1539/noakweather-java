@@ -194,9 +194,9 @@ public class Wind {
         // Set wind speed
         if (windType == 'M') {
             if (windInKnots) {
-                this.windSpeed = Double.parseDouble(token.group("speed"));
+                this.windSpeed = Double.valueOf(token.group("speed"));
             } else {
-                setWindSpeedInMPS(Double.parseDouble(token.group("speed")));
+                setWindSpeedInMPS(Double.valueOf(token.group("speed")));
             }
             LOGGER.debug(Configs.getInstance().getString("WIND_DECODED_WIND_SPEED")
                     + ": " + this.windSpeed);
@@ -208,9 +208,9 @@ public class Wind {
                 LOGGER.debug(Configs.getInstance().getString("WIND_DECODED_WIND_GUST"));
 
                 if (windInKnots) {
-                    this.windGusts = Double.parseDouble(token.group("gust"));
+                    this.windGusts = Double.valueOf(token.group("gust"));
                 } else {
-                    setWindGustsInMPS(Double.parseDouble(token.group("gust")));
+                    setWindGustsInMPS(Double.valueOf(token.group("gust")));
                 }
             } else {
                 // We do not have gusts
@@ -236,7 +236,7 @@ public class Wind {
         try {
             this.peakWindDirection = Integer.parseInt(token.group("dir"));
             this.peakWindDirectionCompass = WindDir.getFormattedWindDir(this.peakWindDirection);
-            this.peakWindSpeed = Double.parseDouble(token.group("speed"));
+            this.peakWindSpeed = Double.valueOf(token.group("speed"));
 
             LOGGER.debug(Configs.getInstance().getString("EXTENDED_DECODED_PEAK_WIND_DIR")
                     + " " + this.peakWindDirection);

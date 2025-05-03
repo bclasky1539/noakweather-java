@@ -97,7 +97,7 @@ public class Taf extends AviaWeath {
         //Parse the Remarks section if it exists
         if (tafRemarks != null) {
             if (tafRemarks.length() > 0) {
-                tafRemarks = tafRemarks + " ";
+                tafRemarks += " ";
             }
             LOGGER.debug(Configs.getInstance().getString("METAR_DECODED_METAR_REMARKS")
                     + " #" + tafRemarks + "#");

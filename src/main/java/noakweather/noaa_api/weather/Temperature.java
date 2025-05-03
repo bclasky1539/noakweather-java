@@ -87,7 +87,7 @@ public class Temperature {
             if (token.group("temp") == null) {
                 this.temperature = null;
             } else {
-                this.temperature = Double.parseDouble(token.group("temp"));
+                this.temperature = Double.valueOf(token.group("temp"));
             }
 
             //this.temperature != 0.0) {
@@ -103,7 +103,7 @@ public class Temperature {
             if (token.group("dewpt") == null) {
                 this.dewPoint = null;
             } else {
-                this.dewPoint = Double.parseDouble(token.group("dewpt"));
+                this.dewPoint = Double.valueOf(token.group("dewpt"));
             }
 
             //this.dewPoint != 0.0)

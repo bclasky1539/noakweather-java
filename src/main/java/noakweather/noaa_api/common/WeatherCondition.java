@@ -136,7 +136,7 @@ public class WeatherCondition {
                     LOGGER.debug(Configs.getInstance().getString("WEATHER_DECODED_GROUP")
                             + " " + Configs.getInstance().getString("WEATHER_DECODED_PRECIPITATION")
                             + ": " + precStr);
-                    index = index + 2;
+                    index += 2;
                 }
             } else {
                 LOGGER.debug(Configs.getInstance().getString("WEATHER_DECODED_GROUP")

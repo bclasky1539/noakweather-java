@@ -81,7 +81,7 @@ public class Metar extends AviaWeath {
         }
 
         if (metarMain.length() > 0) {
-            metarMain = metarMain + " ";
+            metarMain += " ";
         }
         LOGGER.debug(Configs.getInstance().getString("METAR_DECODED_METAR_MAIN")
                 + " #" + metarMain + "#");
@@ -90,7 +90,7 @@ public class Metar extends AviaWeath {
         //Parse the Remarks section if it exists
         if (metarRemarks != null) {
             if (metarRemarks.length() > 0) {
-                metarRemarks = metarRemarks + " ";
+                metarRemarks += " ";
             }
             LOGGER.debug(Configs.getInstance().getString("METAR_DECODED_METAR_REMARKS")
                     + " #" + metarRemarks + "#");

@@ -192,7 +192,7 @@ public class AviaWeath {
                     token = matcher.replaceFirst("").trim();
                     //This is necessary to make sure the last token is properly processed
                     if (token.length() > 0) {
-                        token = token + " ";
+                        token += " ";
                     }
                     LOGGER.debug(Configs.getInstance().getString("MATCH_DECODED_TOKEN_AFTER_LAST_MATCH")
                             + " #" + token);
