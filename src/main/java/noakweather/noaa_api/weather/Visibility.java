@@ -273,7 +273,7 @@ public class Visibility {
                         break;
                     case "RWY":
                         visVarPrevailOne = getVisibilityFromSource(token.group("dist1"));
-                        visVarPrevailRunway = Integer.parseInt(token.group("dist2"));
+                        visVarPrevailRunway = Integer.valueOf(token.group("dist2"));
                         this.isVisVarPrevailRunway = true;
                         LOGGER.debug(Configs.getInstance().getString("VISIBILITY_DECODED_VAR_PREVAIL_ONE")
                                 + ": " + this.visVarPrevailOne);
@@ -333,12 +333,11 @@ public class Visibility {
                 LOGGER.debug("visibilitySplit: " + visibilitySplitFraction);
             }
 
-            visibility = Double.parseDouble(whole);
+            visibility = Double.valueOf(whole);
 
             if (!fraction.equals("")) {
                 String[] visParts = UtilsMisc.stringSplit(fraction, "/");
-                visibility = visibility
-                        + Double.parseDouble(visParts[0])
+                visibility += Double.parseDouble(visParts[0])
                         / Double.parseDouble(visParts[1]);
             }
 

@@ -80,7 +80,7 @@ public class Pressure {
             }
 
             // Get the initial pressure
-            this.pressure = Double.parseDouble(token.group("press"));
+            this.pressure = Double.valueOf(token.group("press"));
 
             // Get pressure, which is reported in hundreths
             //
@@ -93,7 +93,7 @@ public class Pressure {
                     && (token.group("unit").equals(Configs.getInstance().getString("WEATHER_ALTIMETER_A"))
                     || token.group("unit").equals(Configs.getInstance().getString("WEATHER_ALTIMETER_AA")))) {
                 // Correct for no decimal point
-                this.pressure = pressure / ONE_HUND;
+                this.pressure /= ONE_HUND;
                 LOGGER.debug(Configs.getInstance().getString("PRESS_DECODED_PRESSURE")
                         + " " + this.pressure
                         + " " + Configs.getInstance().getString("MSRMNT_DECODED_HG"));
@@ -115,7 +115,7 @@ public class Pressure {
             } else if (token.group("unit") != null && token.group("unit")
                     .equals(Configs.getInstance().getString("WEATHER_ALTIMETER_QNH"))) {
                 // Correct for no decimal point
-                this.pressure = pressure / ONE_HUND;
+                this.pressure /= ONE_HUND;
                 LOGGER.debug(Configs.getInstance().getString("PRESS_DECODED_PRESSURE")
                         + " " + this.pressure
                         + " " + Configs.getInstance().getString("MSRMNT_DECODED_HG"));
@@ -151,12 +151,12 @@ public class Pressure {
                 LOGGER.debug("token: " + token.group("press").substring(0, 1));
                 if (token.group("press").substring(0, 1)
                         .equals(Configs.getInstance().getString("MISC_VALUE_9"))) {
-                    this.seaLevelPressure = Double.parseDouble(Configs.getInstance()
+                    this.seaLevelPressure = Double.valueOf(Configs.getInstance()
                             .getString("MISC_VALUE_9")
                             + token.group("press").substring(0, 2) + "."
                             + token.group("press").substring(2, 3));
                 } else {
-                    this.seaLevelPressure = Double.parseDouble(Configs.getInstance()
+                    this.seaLevelPressure = Double.valueOf(Configs.getInstance()
                             .getString("MISC_VALUE_10")
                             + token.group("press").substring(0, 2) + "."
                             + token.group("press").substring(2, 3));
@@ -198,7 +198,7 @@ public class Pressure {
 
             // Get pressure, which is reported in hundreths
             if (!token.group("press").contains(SLASH_VALUE)) {
-                this.tendencyPressure = Double.parseDouble(token.group("press").substring(0, 2)
+                this.tendencyPressure = Double.valueOf(token.group("press").substring(0, 2)
                         + "." + token.group("press").substring(2, 3));
             }
             LOGGER.debug(Configs.getInstance().getString("PRESS_DECODED_PRESSURE")
