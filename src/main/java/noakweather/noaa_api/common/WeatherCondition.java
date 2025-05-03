@@ -21,6 +21,7 @@ import java.util.regex.Matcher;
 import noakweather.utils.Configs;
 import noakweather.utils.IndexedLinkedHashMap;
 import noakweather.utils.UtilsException;
+import noakweather.utils.UtilsMisc;
 import noakweather.utils.WthItemHandlers;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -126,7 +127,8 @@ public class WeatherCondition {
 
             // If we have precipitation (we should always except for when
             // precipitation is in vicinity!)
-            if (token.group("prec") != null && !token.group("prec").equals("")) {
+            if (token.group("prec") != null && !token.group("prec").equals("")
+                    && !UtilsMisc.containsRepeatedCharacter(token.group("prec"), '/', 2)) {
                 int index = 0;
                 String precStr;
                 while (index != token.group("prec").length()) {
@@ -281,6 +283,7 @@ public class WeatherCondition {
      */
     public void setPrecipitation(String precipitation) throws UtilsException {
         try {
+            LOGGER.debug("aviaWeathCondWthItemsHandlers: #" + aviaWeathCondWthItemsHandlers + "#");
             decodedPrecipitation = aviaWeathCondWthItemsHandlers
                     .getValueAtIndex(aviaWeathCondWthItemsHandlers
                             .getIndexOf(precipitation));

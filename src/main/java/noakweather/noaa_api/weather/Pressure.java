@@ -73,9 +73,10 @@ public class Pressure {
             LOGGER.debug("unit2: #" + token.group("unit2") + "#");
 
             // There may be cases of alphanumeric values in the pressure. If so,
-            // just return
+            // set the pressure to -1.0 and return
             if (!UtilsMisc.containsOnlyNumbers(token.group("press"))) {
-                LOGGER.debug(Configs.getInstance().getString("PRESS_DECODED_CONTNS_ALPHA_VALUES"));
+                this.pressure = MINUS_ONE;
+                LOGGER.debug(Configs.getInstance().getString("PRESS_DECODED_CNTNS_ALPHA_VALUES"));
                 return;
             }
 

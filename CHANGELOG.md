@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.1.2 - Date: May 3, 2025
+
+- Fixed issue IndexOutOfBoundsException when Weather Condition is defined as ////// (Issue #1)
+- Fixed issue Error when pressure is defined as A//// (Issue #4)
+
 ## Version 0.1.1 - Date: May 3, 2025
 
 - Refactored the code
