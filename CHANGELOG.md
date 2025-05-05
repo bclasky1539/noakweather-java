@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.1.3 - Date: May 5, 2025
+
+- Improved logic around getting formatted wind direction (Issue #2)
+
 ## Version 0.1.2 - Date: May 3, 2025
 
 - Fixed issue IndexOutOfBoundsException when Weather Condition is defined as ////// (Issue #1)
