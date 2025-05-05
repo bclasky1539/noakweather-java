@@ -41,48 +41,37 @@ public class WindDir {
      * @return wind direction compass
      */
     public static String getFormattedWindDir(Integer degrees) {
-        String direction = Configs.getInstance().getString("WIND_DECODED_DIR_UNKNOWN");
+        Configs config = Configs.getInstance();
 
         LOGGER.debug("Input degrees: " + degrees);
 
-        if (degrees >= 347.5 || degrees < 12.5) { //0
-            direction = Configs.getInstance().getString("WIND_DIR_NORTH");
-        } else if (degrees >= 12.5 && degrees < 32.5) { //45
-            direction = Configs.getInstance().getString("WIND_DIR_NORTH_NORTH_EAST");
-        } else if (degrees >= 32.5 && degrees < 55) { //45
-            direction = Configs.getInstance().getString("WIND_DIR_NORTH_EAST");
-        } else if (degrees >= 55 && degrees < 77.5) { //45
-            direction = Configs.getInstance().getString("WIND_DIR_EAST_NORTH_EAST");
-        } else if (degrees >= 77.5 && degrees < 100) { //90
-            direction = Configs.getInstance().getString("WIND_DIR_EAST");
-        } else if (degrees >= 100 && degrees < 122.5) { //90
-            direction = Configs.getInstance().getString("WIND_DIR_EAST_SOUTH_EAST");
-        } else if (degrees >= 122.5 && degrees < 145) { //135
-            direction = Configs.getInstance().getString("WIND_DIR_SOUTH_EAST");
-        } else if (degrees >= 145 && degrees < 167.5) { //135
-            direction = Configs.getInstance().getString("WIND_DIR_SOUTH_SOUTH_EAST");
-        } else if (degrees >= 167.5 && degrees < 190) { //180
-            direction = Configs.getInstance().getString("WIND_DIR_SOUTH");
-        } else if (degrees >= 190 && degrees < 212.5) { //180
-            direction = Configs.getInstance().getString("WIND_DIR_SOUTH_SOUTH_WEST");
-        } else if (degrees >= 212.5 && degrees < 235) { //225
-            direction = Configs.getInstance().getString("WIND_DIR_SOUTH_WEST");
-        } else if (degrees >= 235 && degrees < 257.5) { //225
-            direction = Configs.getInstance().getString("WIND_DIR_WEST_SOUTH_WEST");
-        } else if (degrees >= 257.5 && degrees < 280) { //270
-            direction = Configs.getInstance().getString("WIND_DIR_WEST");
-        } else if (degrees >= 280 && degrees < 302.5) { //315
-            direction = Configs.getInstance().getString("WIND_DIR_WEST_NORTH_WEST");
-        } else if (degrees >= 302.5 && degrees < 325) { //315
-            direction = Configs.getInstance().getString("WIND_DIR_NORTH_WEST");
-        } else if (degrees >= 325 && degrees < 347.5) { //315
-            direction = Configs.getInstance().getString("WIND_DIR_NORTH_NORTH_WEST");
-        } else {
-            // Should never happen
-            LOGGER.debug(Configs.getInstance().getString("WIND_DECODED_NOT_DETERMINED"));
-        }
+        // Normalize degrees to 0-360 range
+        degrees = ((degrees % 360) + 360) % 360;
 
-        return direction;
+        // Define direction names in clockwise order starting from North
+        final String[] DIRECTION_KEYS = {
+            "WIND_DIR_NORTH",
+            "WIND_DIR_NORTH_NORTH_EAST",
+            "WIND_DIR_NORTH_EAST",
+            "WIND_DIR_EAST_NORTH_EAST",
+            "WIND_DIR_EAST",
+            "WIND_DIR_EAST_SOUTH_EAST",
+            "WIND_DIR_SOUTH_EAST",
+            "WIND_DIR_SOUTH_SOUTH_EAST",
+            "WIND_DIR_SOUTH",
+            "WIND_DIR_SOUTH_SOUTH_WEST",
+            "WIND_DIR_SOUTH_WEST",
+            "WIND_DIR_WEST_SOUTH_WEST",
+            "WIND_DIR_WEST",
+            "WIND_DIR_WEST_NORTH_WEST",
+            "WIND_DIR_NORTH_WEST",
+            "WIND_DIR_NORTH_NORTH_WEST"
+        };
+
+        // Each direction covers 22.5 degrees, calculate index directly
+        int index = (int)Math.round(degrees / 22.5) % 16;
+
+        return config.getString(DIRECTION_KEYS[index]);
     }
 
 }
