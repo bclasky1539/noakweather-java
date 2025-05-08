@@ -305,6 +305,9 @@ public class Pressure {
      * @return pressure in inches Hg
      */
     public Double getPressure() {
+        if (pressure == null) {
+            return null;
+        }
         return UtilsMisc.roundValue(pressure, 2);
     }
 

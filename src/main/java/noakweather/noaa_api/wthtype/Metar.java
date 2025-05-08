@@ -75,7 +75,11 @@ public class Metar extends AviaWeath {
                     .stringSplit(metarString, Configs.getInstance()
                             .getString("EXTENDED_REMARKS"));
             metarMain = metarParts[0];
-            metarRemarks = metarParts[1];
+            // Check if array has exactly 2 elements. There may be cases where
+            // the RMK is in the record but no actual remarks are present
+            if (metarParts.length == 2) {
+                metarRemarks = metarParts[1];
+            }
         } else {
             metarMain = metarString;
         }
@@ -185,6 +189,9 @@ public class Metar extends AviaWeath {
                 System.out.println(
                         "\nWind       : The wind direction and speed cannot be determined");
             }
+        } else {
+            System.out.println(
+                  "\nWind       : The wind direction and speed cannot be determined");
         }
 
         if (getVisibility() != null) {
@@ -205,6 +212,9 @@ public class Metar extends AviaWeath {
                         + getVisibility().getVisibility() + " mile(s), "
                         + getVisibility().getVisibilityKilometers() + " km(s)");
             }
+        } else {
+            System.out.println(
+                    "\nVisibility   : The visibility cannot be determined");
         }
 
         if (getPressure() != null) {
