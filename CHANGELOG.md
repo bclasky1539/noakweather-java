@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.1.4 - Date: May 8, 2025
+
+- Fixed issue Error when pressure is not defined in metar record (Issue #8)
+- Fixed issue ArrayIndexOutofBoundsException error (Issue #9)
+
 ## Version 0.1.3 - Date: May 5, 2025
 
 - Improved logic around getting formatted wind direction (Issue #2)
