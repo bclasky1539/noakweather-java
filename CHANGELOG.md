@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.1.5 - Date: May 9, 2025
+
+- Implemented HTTP Request Methods to retrieve the weather data (Issue #12)
+
 ## Version 0.1.4 - Date: May 8, 2025
 
 - Fixed issue Error when pressure is not defined in metar record (Issue #8)

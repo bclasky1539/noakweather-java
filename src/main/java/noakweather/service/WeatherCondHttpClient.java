@@ -16,13 +16,16 @@
  */
 package noakweather.service;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.time.Duration;
+import java.util.stream.Stream;
 import noakweather.utils.Configs;
+import noakweather.utils.UtilsException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -60,41 +63,57 @@ public class WeatherCondHttpClient {
      * @param station
      * @param dataType
      * @return metar or taf weather information
+     * @throws noakweather.utils.UtilsException
      */
-    public static String fetchMetarOrTaf(String station, String dataType) {
+    public static String fetchMetarOrTaf(String station, String dataType) throws UtilsException {
         StringBuilder weatherData = new StringBuilder();
-
         try {
-            // Create an URL and URLConnection objects
-            URL url = null;
-            URLConnection connection = null;
-            InputStream inputStream = null;
+            // Create HttpClient
+            HttpClient httpClient = HttpClient.newHttpClient();
+
+            // Determine the URL based on data type
+            URI uri = null;
             if (dataType.equals(Configs.getInstance().getString("MISC_METAR_M"))) {
-                url = new NOAAUrl().generateMetarDataUrl(station);
+                uri = new NOAAUrl().generateMetarDataUri(station);
             } else if (dataType.equals(Configs.getInstance().getString("MISC_TAF_T"))) {
-                url = new NOAAUrl().generateTafDataUrl(station);
-            } // Should never happen
-            else {
-
+                uri = new NOAAUrl().generateTafDataUri(station);
             }
 
-            if (url != null) {
-                connection = url.openConnection();
-            }
+            if (uri != null) {
+                // Build and send GET request
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(uri) // Set the URI
+                        .GET()  // Set the HTTP method to GET
+                        .timeout(Duration.ofSeconds(30)) // Set timeout
+                        .build(); // Build the request
 
-            if (connection != null) {
-                inputStream = connection.getInputStream();
-            }
+                // Send request and get response as a stream of lines
+                HttpResponse<Stream<String>> response = httpClient.send(request,
+                     HttpResponse.BodyHandlers.ofLines());
 
-            BufferedReader reader;
-            reader = new BufferedReader(new InputStreamReader(inputStream));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                weatherData.append(line).append(" ");
+                // Check the status code before processing
+                if (response.statusCode() != HttpURLConnection.HTTP_OK) {
+                    String errMsg = Configs.getInstance().getString("EXCEP_FETCH_WEATHER_DATA")
+                            + " " + response.statusCode();
+                    LOGGER.error(errMsg);
+                    LOGGER.error(Configs.getInstance().getString("EXCEP_FAILED_FETCH_STATION")
+                            + " " + station);
+                    throw new UtilsException("fetchMetarOrTaf: " + errMsg);
+                }
+
+                // Process response body line by line using try-with-resources
+                // to ensure the stream is closed
+                try (Stream<String> lines = response.body()) {
+                    lines.forEach(line -> weatherData.append(line).append(" "));
+                }
             }
         } catch (IOException e) {
             LOGGER.error(Configs.getInstance().getString("EXCEP_FAILED_DOWNLOAD_FILE")
                     + " " + e);
+        } catch (InterruptedException e) {
+            LOGGER.error(Configs.getInstance().getString("EXCEP_HTTP_REQUEST_INTER")
+                    + " " + e);
+            Thread.currentThread().interrupt(); // Reset interrupted status
         } catch (NullPointerException e) {
             LOGGER.error(Configs.getInstance().getString("EXCEP_NULL_POINTER_EXCEPTION")
                     + " " + e);

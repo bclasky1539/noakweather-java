@@ -16,10 +16,8 @@
  */
 package noakweather.service;
 
-import java.net.URL;
+import java.net.URI;
 import noakweather.utils.Configs;
-import noakweather.utils.UtilsException;
-import noakweather.utils.UtilsWeb;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -42,43 +40,36 @@ public class NOAAUrl {
      * Get a new URL instance for Metar information
      *
      * @param station
-     * @return a new URL instance
+     * @return a new URI instance
      */
-    public URL generateMetarDataUrl(String station) {
-
-        URL urlString = null;
-
+    public URI generateMetarDataUri(String station) {
+        URI uri = null;
         try {
-            urlString = UtilsWeb.getUrl(WEATHMETARURL + station + WEATHMETAREXT);
+            uri = URI.create(WEATHMETARURL + station + WEATHMETAREXT);
             LOGGER.debug(Configs.getInstance().getString("NOAA_URL_DECODED_GEN_METAR_URL")
-                    + " " + urlString);
-        } catch (UtilsException err) {
+                    + " " + uri);
+        } catch (IllegalArgumentException err) {
             LOGGER.error(Configs.getInstance().getString("NOAA_URL_DECODED_GEN_MT_ERR_URL")
                     + " " + err);
         }
-
-        return urlString;
-    }
-
+    return uri;
+}
     /**
      * Get a new URL instance for Taf information
      *
      * @param station
-     * @return a new URL instance
+     * @return a new URI instance
      */
-    public URL generateTafDataUrl(String station) {
-
-        URL urlString = null;
-
+    public URI generateTafDataUri(String station) {
+        URI uri = null;
         try {
-            urlString = UtilsWeb.getUrl(WEATHTAFURL + station + WEATHTAFEXT);
+            uri = URI.create(WEATHTAFURL + station + WEATHTAFEXT);
             LOGGER.debug(Configs.getInstance().getString("NOAA_URL_DECODED_GEN_TAF_URL")
-                    + " " + urlString);
-        } catch (UtilsException err) {
+                    + " " + uri);
+        } catch (IllegalArgumentException err) {
             LOGGER.error(Configs.getInstance().getString("NOAA_URL_DECODED_GEN_MT_ERR_URL")
                     + " " + err);
         }
-
-        return urlString;
+        return uri;
     }
 }
