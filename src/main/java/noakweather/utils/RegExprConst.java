@@ -277,11 +277,10 @@ public interface RegExprConst {
 
     /**
      * Sky Conditions FEW = 1 to 2 oktas; SCT (Scattered) = 3 to 4 oktas; BKN
-     * (Broken) = 5 to 7 oktas; OVC (Overcast) = 8 oktas; Examples AC8SC1, CI TR
-     * "^(?<cloud>(CU|CB|CF|ST|SC|SF|NS|AS|AC|CS|CC|CI))(?<okta>\\d|\\s\\w{1,3})?(\\s*(?<verb>MOVG)\\s*(?<dirm>[NSEW][EW]?))?"
+     * (Broken) = 5 to 7 oktas; OVC (Overcast) = 8 oktas; Examples AC8SC1, CI TR, MDT CU OHD-ALQDS
      */
     public static final Pattern CLOUD_OKTA_PATTERN = Pattern.compile(
-            "^(?<cloud>(CU|CF|ST|SC|SF|NS|AS|AC|CS|CC|CI))(?<okta>\\d|\\s\\w{1,3})?(\\s*(?<verb>MOVG)\\s*(?<dirm>[NSEW][EW]?))?"
+             "^(?<intensity>MDT\\s+)?(?<cloud>(CU|CF|ST|SC|SF|NS|AS|AC|CS|CC|CI))(?<okta>[1-8](?=\\s|$))?((\\s*(?<verb>MOVG)\\s*(?<dirm>[NSEW][EW]?))|(\\s+(?<direction>OHD-ALQDS|ALQDS|OHD)))?"
     );
 
     /**
