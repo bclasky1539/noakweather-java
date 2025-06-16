@@ -887,33 +887,43 @@ public class Remarks {
     public void setCloudOktaItems(Matcher token) throws UtilsException {
         String windDirection = null;
         try {
+            LOGGER.debug("intensity: #" + token.group("intensity") + "#");
             LOGGER.debug("cloud: #" + token.group("cloud") + "#");
             LOGGER.debug("okta: #" + token.group("okta") + "#");
             LOGGER.debug("verb: #" + token.group("verb") + "#");
             LOGGER.debug("dirm: #" + token.group("dirm") + "#");
+            LOGGER.debug("direction: #" + token.group("direction") + "#");
 
             decodedRemarksString
                     .append(Configs.getInstance().getString("CLOUD_DECODED_CLOUD_AND_COVER"))
                     .append(" ");
 
-            if (token.group("okta").trim().equals(Configs.getInstance().getString("WEATHER_TRACE"))) {
+            if (token.group("intensity").trim().equals(Configs.getInstance().getString("WEATHER_MODERATE"))) {
                 decodedRemarksString
-                        .append(Configs.getInstance().getString("WEATHER_DECODED_TRACE"))
-                        .append(" ");
-            } else if (token.group("okta").trim().equals(Configs.getInstance().getString("LOC_TIME_DISTANT_I"))) {
-                decodedRemarksString
-                        .append(Configs.getInstance().getString("LOC_TIME_DECODED_DISTANT"))
-                        .append(" ");
-            } else {
-                decodedRemarksString.append(aviaRemarkWthItemsHandlers
-                        .getValueAtIndex(aviaRemarkWthItemsHandlers
-                                .getIndexOf(token.group("okta")
-                                        + Configs.getInstance().getString("MISC_VALUE_CO"))))
+                        .append(Configs.getInstance().getString("WEATHER_DECODED_MODERATE"))
                         .append(" ");
             }
-            //else {
-            //    windDirection = token.group("okta");
-            //}
+            
+            if (token.group("okta") != null) {
+                if (token.group("okta").trim().equals(Configs.getInstance().getString("WEATHER_TRACE"))) {
+                    decodedRemarksString
+                            .append(Configs.getInstance().getString("WEATHER_DECODED_TRACE"))
+                            .append(" ");
+                } else if (token.group("okta").trim().equals(Configs.getInstance().getString("LOC_TIME_DISTANT_I"))) {
+                    decodedRemarksString
+                            .append(Configs.getInstance().getString("LOC_TIME_DECODED_DISTANT"))
+                            .append(" ");
+                } else {
+                    decodedRemarksString.append(aviaRemarkWthItemsHandlers
+                            .getValueAtIndex(aviaRemarkWthItemsHandlers
+                                    .getIndexOf(token.group("okta")
+                                            + Configs.getInstance().getString("MISC_VALUE_CO"))))
+                            .append(" ");
+                }
+                //else {
+                //    windDirection = token.group("okta");
+                //}
+            }
 
             decodedRemarksString.append(aviaRemarkWthItemsHandlers
                     .getValueAtIndex(aviaRemarkWthItemsHandlers
@@ -931,6 +941,12 @@ public class Remarks {
 
             if (token.group("dirm") != null) {
                 decodedRemarksString.append(" ").append(token.group("dirm"));
+            }
+            
+            if (token.group("direction") != null) {
+                decodedRemarksString.append(aviaRemarkWthItemsHandlers
+                        .getValueAtIndex(aviaRemarkWthItemsHandlers
+                                .getIndexOf(token.group("direction"))));
             }
 
             decodedRemarksString.append("\n");

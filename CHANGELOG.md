@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.1.6 - Date: June 16, 2025
+
+- Fixed issue error in remarks section for cloud cover defined as CU ALQDS (Issue #15)
+
 ## Version 0.1.5 - Date: May 9, 2025
 
 - Implemented HTTP Request Methods to retrieve the weather data (Issue #12)

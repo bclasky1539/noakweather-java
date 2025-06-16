@@ -293,6 +293,10 @@ public final class WthItemHandlers {
                 Configs.getInstance().getString("SKY_COND_DECODED_BROKEN"));
         remarkWthItemsHandlers.put(Configs.getInstance().getString("CLOUD_OKTA_8"),
                 Configs.getInstance().getString("SKY_COND_DECODED_OVERCAST"));
+        remarkWthItemsHandlers.put(Configs.getInstance().getString("CLOUD_OKTA_ALQDS"),
+                Configs.getInstance().getString("SKY_COND_DECODED_ALQDS"));
+        remarkWthItemsHandlers.put(Configs.getInstance().getString("CLOUD_OKTA_OHD-ALQDS"),
+                Configs.getInstance().getString("SKY_COND_DECODED_OHD-ALQDS"));
         remarkWthItemsHandlers.put(Configs.getInstance().getString("CLOUD_CUMULUS"),
                 Configs.getInstance().getString("CLOUD_DECODED_CUMULUS"));
         remarkWthItemsHandlers.put(Configs.getInstance().getString("CLOUD_CUMULONIMBUS"),
