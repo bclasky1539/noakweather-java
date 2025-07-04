@@ -1,7 +1,7 @@
 # noakweather-java
 noakweather-java project
 
-This Java library provides a Metar and TAF decoder.
+This Java library provides a METAR and TAF decoder.
 
 ## What is METAR?
 METAR (Meteorological Terminal Air Report) is current weather report format used in aviation. Typical METAR report contains information such as location,
@@ -38,12 +38,16 @@ your project, and put the results in the target directory. Also, there is a shel
 
 
 ## Run project
-The decoder requires 4 parameters
+The decoder can retrieve the METAR and TAF data from either the NOAA website or from a file specified at the command line.
 
-Type of data: m - metar or t - taf
-Station 4-letter ICAO code: For example KCLT or kclt
-Print results: N or Y
-Logging of run: I - Info, W - Warnings (includes info), D - Debug (includes info and warnings)
+The decoder requires 4 parameters\
+**Type of data:** m - metar or t - taf\
+**Station 4-letter ICAO code or filename where the METAR or TAF data is:** Specify the full path of the file.\
+&nbsp;&nbsp;&nbsp;&nbsp;For 4-letter ICAO code an example can be KCLT or kclt\
+&nbsp;&nbsp;&nbsp;&nbsp;For a filename an example can be weather_data_metar.txt or weather_data_taf.txt. An example of each are included.\
+&nbsp;&nbsp;&nbsp;&nbsp;Make sure when using a filename that the phrase **file:** precedes the filename. For example **file:weather_data_metar.txt**\
+**Print results:** N or Y\
+**Logging of run:** I - Info, W - Warnings (includes info), D - Debug (includes info and warnings)
 
 A shell script is provided named weth.sh. To run normally run logging as I for info. If there is any error or there is unparsed data found run logging
 as D for debug to see why the error or unparsed data is occurring.

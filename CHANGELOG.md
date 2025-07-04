@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.2.0 - Date: July 4, 2025
+
+- Implement the ability to retrieve the METAR/TAF data using a text file of the data  (Issue #11)
+
 ## Version 0.1.6 - Date: June 16, 2025
 
 - Fixed issue error in remarks section for cloud cover defined as CU ALQDS (Issue #15)

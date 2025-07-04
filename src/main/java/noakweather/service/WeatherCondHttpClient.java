@@ -23,6 +23,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
+import java.util.Optional;
 import java.util.stream.Stream;
 import noakweather.utils.Configs;
 import noakweather.utils.UtilsException;
@@ -65,7 +66,7 @@ public class WeatherCondHttpClient {
      * @return metar or taf weather information
      * @throws noakweather.utils.UtilsException
      */
-    public static String fetchMetarOrTaf(String station, String dataType) throws UtilsException {
+    public static Optional<String> fetchMetarOrTaf(String station, String dataType) throws UtilsException {
         StringBuilder weatherData = new StringBuilder();
         try {
             // Create HttpClient
@@ -122,7 +123,7 @@ public class WeatherCondHttpClient {
         LOGGER.debug(Configs.getInstance().getString("MISC_WEATHER_DATA")
                 + " " + weatherData.toString());
 
-        return weatherData.toString();
+        return Optional.of(weatherData.toString());
     }
 
     private WeatherCondHttpClient() {
