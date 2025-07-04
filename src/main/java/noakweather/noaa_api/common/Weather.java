@@ -18,6 +18,9 @@ package noakweather.noaa_api.common;
 
 //import noakweather.noakutils.UtilsException;
 //import noakweather.noakutils.UtilsMisc;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.Optional;
 import noakweather.noaa_api.wthtype.Metar;
 import noakweather.noaa_api.wthtype.Taf;
 import noakweather.service.WeatherCondHttpClient;
@@ -38,6 +41,24 @@ public class Weather {
             = LogManager.getLogger(Weather.class.getName());
 
     /**
+     * Get the TAF information based on if it is from a file or live
+     *
+     * @param station
+     * @param parsePrint
+     * @param dataType
+     * @return
+     * @throws noakweather.utils.UtilsException
+     * @throws java.io.IOException
+     */
+    public static Taf getTaf(String station, String parsePrint, String dataType) throws UtilsException, IOException {
+        if (isFilePath(station)) {
+            return getTafFromFile(station, parsePrint);
+        } else {
+            return getTafFromLiveSource(station, parsePrint, dataType);
+        }
+    }
+
+    /**
      * Get the TAF information
      *
      * @param station
@@ -46,38 +67,84 @@ public class Weather {
      * @return
      * @throws noakweather.utils.UtilsException
      */
-    public static Taf getTaf(String station, String parsePrint, String dataType) throws UtilsException {
-        String tafData = null;
+    private static Taf getTafFromLiveSource(String station, String parsePrint, String dataType) throws UtilsException {
+        Optional<String> tafData = WeatherCondHttpClient.fetchMetarOrTaf(station, dataType);
+        return processTafData(station, parsePrint, tafData);
+    }
 
+    /**
+     * Get the TAF information
+     *
+     * @param station
+     * @param parsePrint
+     * @return
+     * @throws noakweather.utils.UtilsException
+     */
+    private static Taf getTafFromFile(String filePath, String parsePrint) throws UtilsException, IOException {
+        String cleanPath = filePath.startsWith("FILE:") ? filePath.substring(5) : filePath;
+        LOGGER.info(Configs.getInstance().getString("FILENAME_DECODED_VALUE") + " " + cleanPath);
+    
+        WeatherDataFile weatherFile = WeatherDataFile.fromPath(Paths.get(cleanPath));
+        String station = weatherFile.getPrimaryStationCode();
+        Optional<String> tafData = weatherFile.findTafData(station);
+    
+        return processTafData(station, parsePrint, tafData);
+    }
+
+    /**
+     * Get the TAF information
+     *
+     * @param station
+     * @param parsePrint
+     * @param tafData
+     * @return
+     * @throws noakweather.utils.UtilsException
+     */
+    private static Taf processTafData(String station, String parsePrint, Optional<String> tafData) throws UtilsException {
         Taf taf = new Taf();
-
-        LOGGER.info(Configs.getInstance().getString("MISC_STATION")
-                + " " + station);
-        tafData = WeatherCondHttpClient.fetchMetarOrTaf(station, dataType);
-        System.out.println(Configs.getInstance().getString("MISC_RAW_TAFDATA")
-                + " #" + tafData + "#");
-        LOGGER.info(Configs.getInstance().getString("MISC_RAW_TAFDATA")
-                + " #" + tafData + "#");
-        if (tafData != null && tafData.length() > 0) {
-            taf.parse(tafData);
-            if (parsePrint.equals("Y")) {
-                System.out.println("\n\n\n"
-                        + Configs.getInstance().getString("MISC_RAW_TAFDATA")
-                        + " #" + tafData + "#");
+    
+        LOGGER.info(Configs.getInstance().getString("MISC_STATION") + " " + station);
+    
+        if (tafData.isPresent()) {
+            String rawData = tafData.get();
+            String rawTafMessage = Configs.getInstance().getString("MISC_RAW_TAFDATA") + " #" + rawData + "#";
+        
+            System.out.println(rawTafMessage);
+            LOGGER.info(rawTafMessage);
+        
+            taf.parse(rawData);
+        
+            if ("Y".equals(parsePrint)) {
+                System.out.println("\n\n\n" + rawTafMessage);
                 taf.print();
             }
+        } else {
+            System.out.println(Configs.getInstance().getString("MISC_TAF_NONE") + " " + station);
         }
-        else {
-            System.out.println(Configs.getInstance().getString("MISC_TAF_NONE")
-            + " " + station);
-        }
-
+    
         return taf;
     }
 
-    //public static Metar getMetar(String station, int timeout) {
     /**
-     * Get the METAR information
+     * Get the METAR information based on if it is from a file or live
+     *
+     * @param station
+     * @param parsePrint
+     * @param dataType
+     * @return
+     * @throws noakweather.utils.UtilsException
+     * @throws java.io.IOException
+     */
+    public static Metar getMetar(String station, String parsePrint, String dataType) throws UtilsException, IOException {
+        if (isFilePath(station)) {
+            return getMetarFromFile(station, parsePrint);
+        } else {
+            return getMetarFromLiveSource(station, parsePrint, dataType);
+        }
+    }
+
+    /**
+     * Prepare to get the METAR information from live source
      *
      * @param station
      * @param parsePrint
@@ -85,32 +152,76 @@ public class Weather {
      * @return
      * @throws noakweather.utils.UtilsException
      */
-    public static Metar getMetar(String station, String parsePrint, String dataType) throws UtilsException {
-        String metarData = null;
+    private static Metar getMetarFromLiveSource(String station, String parsePrint, String dataType) throws UtilsException {
+        Optional<String> metarData = WeatherCondHttpClient.fetchMetarOrTaf(station, dataType);
+        return processMetarData(station, parsePrint, metarData);
+    }
 
+    /**
+     * Prepare to get the METAR information from file
+     *
+     * @param station
+     * @param parsePrint
+     * @return
+     * @throws noakweather.utils.UtilsException
+     */
+    private static Metar getMetarFromFile(String filePath, String parsePrint) throws UtilsException, IOException {
+        String cleanPath = filePath.startsWith("FILE:") ? filePath.substring(5) : filePath;
+        LOGGER.info(Configs.getInstance().getString("FILENAME_DECODED_VALUE") + " " + cleanPath);
+    
+        WeatherDataFile weatherFile = WeatherDataFile.fromPath(Paths.get(cleanPath));
+        String station = weatherFile.getPrimaryStationCode();
+        Optional<String> metarData = weatherFile.findMetarData(station);
+
+        return processMetarData(station, parsePrint, metarData);
+    }
+
+    /**
+     * Get the METAR information
+     *
+     * @param station
+     * @param parsePrint
+     * @param metarData
+     * @return
+     * @throws noakweather.utils.UtilsException
+     */
+    private static Metar processMetarData(String station, String parsePrint, Optional<String> metarData) throws UtilsException {
         Metar metar = new Metar();
-
-        LOGGER.info(Configs.getInstance().getString("MISC_STATION")
-                + " " + station);
-        metarData = WeatherCondHttpClient.fetchMetarOrTaf(station, dataType);
-        System.out.println(Configs.getInstance().getString("MISC_RAW_METARDATA")
-                + " #" + metarData + "#");
-        LOGGER.info(Configs.getInstance().getString("MISC_RAW_METARDATA")
-                + " #" + metarData + "#");
-        if (metarData != null && metarData.length() > 0) {
-            metar.parse(metarData);
-            if (parsePrint.equals("Y")) {
-                System.out.println("\n\n\n"
-                        + Configs.getInstance().getString("MISC_RAW_METARDATA")
-                        + " #" + metarData + "#");
+    
+        LOGGER.info(Configs.getInstance().getString("MISC_STATION") + " " + station);
+    
+        if (metarData.isPresent()) {
+            String rawData = metarData.get();
+            String rawMetarMessage = Configs.getInstance().getString("MISC_RAW_METARDATA") + " #" + rawData + "#";
+        
+            System.out.println(rawMetarMessage);
+            LOGGER.info(rawMetarMessage);
+        
+            metar.parse(rawData);
+        
+            if ("Y".equals(parsePrint)) {
+                System.out.println("\n\n\n" + rawMetarMessage);
                 metar.print();
             }
-        }
-        else {
-            System.out.println(Configs.getInstance().getString("MISC_METAR_NONE")
-            + " " + station);
+        } else {
+            System.out.println(Configs.getInstance().getString("MISC_METAR_NONE") + " " + station);
         }
 
         return metar;
     }
+
+    /**
+     * Check if input file exists
+     *
+     * @param input
+     * @return
+     */
+    private static boolean isFilePath(String input) {
+        LOGGER.debug(input.startsWith("FILE:")
+                ? Configs.getInstance().getString("FILENAME_DECODED_EXISTS") + " " + input 
+                : Configs.getInstance().getString("FILENAME_DECODED_NOT_EXISTS"));
+ 
+        return input.startsWith("FILE:");
+    }
 }
+

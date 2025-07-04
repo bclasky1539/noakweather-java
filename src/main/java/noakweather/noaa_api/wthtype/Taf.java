@@ -230,6 +230,7 @@ public class Taf extends AviaWeath {
      * Display the taf data in a human-readable format
      */
     public void print() {
+        System.out.println("\n");
         System.out.println("In Taf Print");
         System.out.println("Station id : " + getStationID());
         System.out.println("Date       : " + getDate());

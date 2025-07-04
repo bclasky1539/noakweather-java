@@ -16,6 +16,7 @@
  */
 package noakweather;
 
+import java.io.IOException;
 import java.util.Locale;
 import noakweather.noaa_api.common.Weather;
 import noakweather.noaa_api.wthtype.Metar;
@@ -34,7 +35,7 @@ import org.apache.logging.log4j.core.config.Configurator;
  */
 public class NoakWeatherMain {
 
-    static String station = "KCLT";
+    static String station = "";
     static Metar metar = null;
     static Taf taf = null;
 
@@ -98,24 +99,12 @@ public class NoakWeatherMain {
         try {
             if (args[0].toUpperCase().matches(Configs.getInstance().getString("MISC_METAR_M"))) {
                 LOGGER.info("Processing Metar data");
-                if (args[1].length() == 4) {
-                    station = args[1].toUpperCase();
-                    LOGGER.info("station: " + station);
-                    metar = Weather.getMetar(station, args[2].toUpperCase(), args[0].toUpperCase());
-                } else {
-                    LOGGER.info("No station was specified. Will be default");
-                    metar = Weather.getMetar(station, "Y", Configs.getInstance().getString("MISC_METAR_M"));
-                }
+                station = args[1].toUpperCase();
+                metar = Weather.getMetar(station, args[2].toUpperCase(), args[0].toUpperCase());
             } else if (args[0].toUpperCase().matches(Configs.getInstance().getString("MISC_TAF_T"))) {
                 LOGGER.info("Processing Taf data");
-                if (args[1].length() == 4) {
-                    station = args[1].toUpperCase();
-                    LOGGER.info("station: " + station);
-                    taf = Weather.getTaf(station, args[2].toUpperCase(), args[0].toUpperCase());
-                } else {
-                    LOGGER.info("No station was specified. Will be default");
-                    taf = Weather.getTaf(station, "Y", Configs.getInstance().getString("MISC_TAF_T"));
-                }
+                station = args[1].toUpperCase();
+                taf = Weather.getTaf(station, args[2].toUpperCase(), args[0].toUpperCase());
             } else {
                 System.out.println(Configs.getInstance().getString("LOG_DECODED_MSG_UNK_WTH_TYP"));
                 LOGGER.error(Configs.getInstance().getString("LOG_DECODED_MSG_UNK_WTH_TYP"));
@@ -124,7 +113,7 @@ public class NoakWeatherMain {
                 System.out.println(Configs.getInstance().getString("LOG_DECODED_MSG_TAF_PARM"));
                 LOGGER.error(Configs.getInstance().getString("LOG_DECODED_MSG_TAF_PARM"));
             }
-        } catch (UtilsException err) {
+        } catch (UtilsException | IOException err) {
             System.out.println(err + ": Check log file for details of error");
         }
     }
