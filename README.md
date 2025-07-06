@@ -67,7 +67,7 @@ Unparsed Data is as follows
 
 
 ## Issues
-If you notice any problems with running this, please open an issue. Thanks.
+If you notice any problems with running this, please open an issue.
 
 
 ## Which groups Metar is able to recognize?
