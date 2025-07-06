@@ -66,11 +66,6 @@ public class NoakWeatherMain {
         //Configurator.setLevel(AviaWeath.class.getName(), Level.WARN);
         //System.out.println(LogManager.getLogger(AviaWeath.class.getName()));
 
-        /*System.out.println("args.length: " + args.length);
-        System.out.println("args[0]: " + args[0]);
-        System.out.println("args[1]: " + args[1]);
-        System.out.println("args[2]: " + args[2]);
-        System.out.println("args[3]: " + args[3]);*/
         // Parse parameters
         if (args[3].toUpperCase().matches("I")) {
             // Set the root LOGGER to Level.INFO
