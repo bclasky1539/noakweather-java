@@ -1,3 +1,5 @@
+[![Java CI with Maven](https://github.com/bclasky1539/noakweather-java/actions/workflows/maven.yml/badge.svg)](https://github.com/bclasky1539/noakweather-java/actions/workflows/maven.yml)
+
 # noakweather-java
 noakweather-java project
 
