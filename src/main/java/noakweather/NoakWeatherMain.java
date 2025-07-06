@@ -47,7 +47,6 @@ public class NoakWeatherMain {
      */
     public static void main(String[] args) {
         Configs.getInstance().setLocale(Locale.ENGLISH);
-        //Configs configs = Configs.getInstance();
 
         if (args.length < 4) {
             System.out.println(Configs.getInstance().getString("LOG_DECODED_MSG_NOT_EN"));
@@ -91,11 +90,6 @@ public class NoakWeatherMain {
             System.out.println(Configs.getInstance().getString("LOG_DECODED_UNKN") + "\n");
         }
 
-        //String whichVersion = System.getProperty("java.version");
-        //System.out.println(whichVersion);
-        //String whichJVMVersion = System.getProperty("java.vm.version");
-        //System.out.println(whichJVMVersion);
-        //metar = Weather.getMetar(station, "Y", MiscConstInterface.MISC_METAR_M);
         try {
             if (args[0].toUpperCase().matches(Configs.getInstance().getString("MISC_METAR_M"))) {
                 LOGGER.info("Processing Metar data");
