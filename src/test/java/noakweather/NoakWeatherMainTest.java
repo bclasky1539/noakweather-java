@@ -61,8 +61,76 @@ public class NoakWeatherMainTest {
         args[2] = "y";
         args[3] = "i";
         NoakWeatherMain.main(args);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
     }
 
+    @Test
+    public void testMainWithInsufficientArgs() {
+        System.out.println("testMainWithInsufficientArgs");
+        String[] args = new String[2]; // Less than 4 args
+        args[0] = "m";
+        args[1] = "kclt";
+        
+        // This tests the early exit path when args.length < 4
+        NoakWeatherMain.main(args);
+    }
+
+    @Test
+    public void testMainWithTafType() {
+        System.out.println("testMainWithTafType");
+        String[] args = new String[4];
+        args[0] = "t"; // TAF instead of METAR
+        args[1] = "kclt";
+        args[2] = "y";
+        args[3] = "i";
+        
+        NoakWeatherMain.main(args);
+    }
+
+    @Test
+    public void testMainWithInvalidWeatherType() {
+        System.out.println("testMainWithInvalidWeatherType");
+        String[] args = new String[4];
+        args[0] = "x"; // Invalid type (not 'm' or 't')
+        args[1] = "kclt";
+        args[2] = "y";
+        args[3] = "i";
+        
+        NoakWeatherMain.main(args);
+    }
+
+    @Test
+    public void testMainWithWarningLogLevel() {
+        System.out.println("testMainWithWarningLogLevel");
+        String[] args = new String[4];
+        args[0] = "m";
+        args[1] = "kclt";
+        args[2] = "y";
+        args[3] = "w"; // Warning log level
+        
+        NoakWeatherMain.main(args);
+    }
+
+    @Test
+    public void testMainWithDebugLogLevel() {
+        System.out.println("testMainWithDebugLogLevel");
+        String[] args = new String[4];
+        args[0] = "m";
+        args[1] = "kclt";
+        args[2] = "y";
+        args[3] = "d"; // Debug log level
+        
+        NoakWeatherMain.main(args);
+    }
+
+    @Test
+    public void testMainWithUnknownLogLevel() {
+        System.out.println("testMainWithUnknownLogLevel");
+        String[] args = new String[4];
+        args[0] = "m";
+        args[1] = "kclt";
+        args[2] = "y";
+        args[3] = "x"; // Unknown log level
+        
+        NoakWeatherMain.main(args);
+    }
 }
