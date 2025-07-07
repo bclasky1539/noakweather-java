@@ -66,7 +66,7 @@ public class NoakWeatherMain {
             LOGGER.fatal(MSG_MET_PARM);
             LOGGER.fatal(MSG_TAF_PARM);
             LOGGER.fatal(MSG_EXIT);
-            System.exit(0);
+            return;
         }
 
         // This works to set a particular Logger's logging level
