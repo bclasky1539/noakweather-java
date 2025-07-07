@@ -47,16 +47,22 @@ public class NoakWeatherMain {
      */
     public static void main(String[] args) {
         Configs.getInstance().setLocale(Locale.ENGLISH);
+        
+        final String MSG_NOT_EN = Configs.getInstance().getString("LOG_DECODED_MSG_NOT_EN");
+        final String MSG_MET_PARM = Configs.getInstance().getString("LOG_DECODED_MSG_MET_PARM");
+        final String MSG_TAF_PARM = Configs.getInstance().getString("LOG_DECODED_MSG_TAF_PARM");
+        final String MSG_EXIT = Configs.getInstance().getString("LOG_DECODED_MSG_EXIT");
+        final String MSG_UNK_WTH_TYP = Configs.getInstance().getString("LOG_DECODED_MSG_UNK_WTH_TYP");
 
         if (args.length < 4) {
-            System.out.println(Configs.getInstance().getString("LOG_DECODED_MSG_NOT_EN"));
-            LOGGER.fatal(Configs.getInstance().getString("LOG_DECODED_MSG_NOT_EN"));
-            System.out.println(Configs.getInstance().getString("LOG_DECODED_MSG_MET_PARM"));
-            LOGGER.fatal(Configs.getInstance().getString("LOG_DECODED_MSG_MET_PARM"));
-            System.out.println(Configs.getInstance().getString("LOG_DECODED_MSG_TAF_PARM") + "\n");
-            LOGGER.fatal(Configs.getInstance().getString("LOG_DECODED_MSG_TAF_PARM"));
-            System.out.println(Configs.getInstance().getString("LOG_DECODED_MSG_EXIT") + "\n");
-            LOGGER.fatal(Configs.getInstance().getString("LOG_DECODED_MSG_EXIT"));
+            System.out.println(MSG_NOT_EN);
+            LOGGER.fatal(MSG_NOT_EN);
+            System.out.println(MSG_MET_PARM);
+            LOGGER.fatal(MSG_MET_PARM);
+            System.out.println(MSG_TAF_PARM + "\n");
+            LOGGER.fatal(MSG_TAF_PARM);
+            System.out.println(MSG_EXIT + "\n");
+            LOGGER.fatal(MSG_EXIT);
             System.exit(0);
         }
 
@@ -95,12 +101,12 @@ public class NoakWeatherMain {
                 station = args[1].toUpperCase();
                 taf = Weather.getTaf(station, args[2].toUpperCase(), args[0].toUpperCase());
             } else {
-                System.out.println(Configs.getInstance().getString("LOG_DECODED_MSG_UNK_WTH_TYP"));
-                LOGGER.error(Configs.getInstance().getString("LOG_DECODED_MSG_UNK_WTH_TYP"));
-                System.out.println(Configs.getInstance().getString("LOG_DECODED_MSG_MET_PARM"));
-                LOGGER.error(Configs.getInstance().getString("LOG_DECODED_MSG_MET_PARM"));
-                System.out.println(Configs.getInstance().getString("LOG_DECODED_MSG_TAF_PARM"));
-                LOGGER.error(Configs.getInstance().getString("LOG_DECODED_MSG_TAF_PARM"));
+                System.out.println(MSG_UNK_WTH_TYP);
+                LOGGER.fatal(MSG_UNK_WTH_TYP);
+                System.out.println(MSG_MET_PARM);
+                LOGGER.fatal(MSG_MET_PARM);
+                System.out.println(MSG_TAF_PARM + "\n");
+                LOGGER.fatal(MSG_TAF_PARM);
             }
         } catch (UtilsException | IOException err) {
             System.out.println(err + ": Check log file for details of error");

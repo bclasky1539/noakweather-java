@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.2.1 - Date: July 7, 2025
+
+- SonarCloud maintainability issues in NoakWeatherMain class
+
 ## Version 0.2.0 - Date: July 4, 2025
 
 - Implement the ability to retrieve the METAR/TAF data using a text file of the data  (Issue #11)
