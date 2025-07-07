@@ -28,6 +28,14 @@ import java.util.TimeZone;
 public class UtilsDate {
 
     /**
+     * Private constructor to prevent instantiation of utility class
+     *
+     */
+    private UtilsDate() {
+        // Utility class - not meant to be instantiated
+    }
+
+    /**
      * Set the date information
      *
      * @param day
@@ -79,10 +87,6 @@ public class UtilsDate {
         int minuteInt = 0;
 
         try {
-            //String day = ((String) text).substring(0, 2);
-            //String hour = ((String) text).substring(2, 4);
-            //String minute = ((String) text).substring(4, 6);
-
             yearInt = Integer.parseInt(year);
             monthInt = Integer.parseInt(month);
             dayInt = Integer.parseInt(day);
@@ -139,7 +143,7 @@ public class UtilsDate {
         // 1918/2018 means it is valid from the 19th 1800Z to the 20th 1800Z
         // TODO: Need to test the format 3100Z-0112Z
 
-        String validFromToDate[] = new String[2];
+        String[] validFromToDate = new String[2];
 
         // If text is null then throw NullPointerException
         if (text == null) {
@@ -175,10 +179,6 @@ public class UtilsDate {
                         + text.substring(4, 6) + "00Z";
             }
         } else {
-            //validFromToDate[0] = "Invalid dates";
-            //validFromToDate[1] = "Invalid dates";
-            // Should not reach here
-            // If text is blank then throw NullPointerException
             throw new UtilsException("Missing Valid to and from Date/Time");
         }
 
