@@ -25,9 +25,10 @@ package noakweather.utils;
 public class UtilsException extends Exception {
 
     /**
-     * The record that caused the exception.
+     * The recordException that caused the exception.
      */
-    protected String record = null;
+    @SuppressWarnings("java:S1165")
+    protected String recordException = null;
 
     /**
      * Default constructor
@@ -65,20 +66,20 @@ public class UtilsException extends Exception {
     }
 
     /**
-     * Get record
+     * Get recordException
      *
-     * @return Returns the record.
+     * @return Returns the recordException.
      */
-    public String getRecord() {
-        return record;
+    public String getRecordException() {
+        return recordException;
     }
 
     /**
-     * Set record
+     * Set recordException
      *
-     * @param record The record to set.
+     * @param recordException The recordException to set.
      */
-    public void setRecord(String record) {
-        this.record = record;
+    public void setRecordException(String recordException) {
+        this.recordException = recordException;
     }
 }
