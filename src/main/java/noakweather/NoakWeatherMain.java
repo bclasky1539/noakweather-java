@@ -47,63 +47,67 @@ public class NoakWeatherMain {
      */
     public static void main(String[] args) {
         Configs.getInstance().setLocale(Locale.ENGLISH);
+        
+        final String MSG_NOT_EN = Configs.getInstance().getString("LOG_DECODED_MSG_NOT_EN");
+        final String MSG_MET_PARM = Configs.getInstance().getString("LOG_DECODED_MSG_MET_PARM");
+        final String MSG_TAF_PARM = Configs.getInstance().getString("LOG_DECODED_MSG_TAF_PARM");
+        final String MSG_EXIT = Configs.getInstance().getString("LOG_DECODED_MSG_EXIT");
+        final String MSG_UNK_WTH_TYP = Configs.getInstance().getString("LOG_DECODED_MSG_UNK_WTH_TYP");
+        final String CHECK_LOG_FILE = Configs.getInstance().getString("EXCEP_CHECK_LOG_FILE");
+        final String LOG_DECODED_INFO = Configs.getInstance().getString("LOG_DECODED_INFO");
+        final String LOG_DECODED_WARN = Configs.getInstance().getString("LOG_DECODED_WARN");
+        final String LOG_DECODED_DEBUG = Configs.getInstance().getString("LOG_DECODED_DEBUG");
+        final String LOG_DECODED_UNKN = Configs.getInstance().getString("LOG_DECODED_UNKN");
+        final String PROCESS_METAR_DATA = Configs.getInstance().getString("LOG_DECODED_PROCESS_METAR_DATA");
+        final String PROCESS_TAF_DATA = Configs.getInstance().getString("LOG_DECODED_PROCESS_TAF_DATA");
 
         if (args.length < 4) {
-            System.out.println(Configs.getInstance().getString("LOG_DECODED_MSG_NOT_EN"));
-            LOGGER.fatal(Configs.getInstance().getString("LOG_DECODED_MSG_NOT_EN"));
-            System.out.println(Configs.getInstance().getString("LOG_DECODED_MSG_MET_PARM"));
-            LOGGER.fatal(Configs.getInstance().getString("LOG_DECODED_MSG_MET_PARM"));
-            System.out.println(Configs.getInstance().getString("LOG_DECODED_MSG_TAF_PARM") + "\n");
-            LOGGER.fatal(Configs.getInstance().getString("LOG_DECODED_MSG_TAF_PARM"));
-            System.out.println(Configs.getInstance().getString("LOG_DECODED_MSG_EXIT") + "\n");
-            LOGGER.fatal(Configs.getInstance().getString("LOG_DECODED_MSG_EXIT"));
+            LOGGER.fatal(MSG_NOT_EN);
+            LOGGER.fatal(MSG_MET_PARM);
+            LOGGER.fatal(MSG_TAF_PARM);
+            LOGGER.fatal(MSG_EXIT);
             System.exit(0);
         }
 
         // This works to set a particular Logger's logging level
         // For future use
-        //System.out.println(LogManager.getLogger(AviaWeath.class.getName()));
         //Configurator.setLevel(AviaWeath.class.getName(), Level.WARN);
-        //System.out.println(LogManager.getLogger(AviaWeath.class.getName()));
 
         // Parse parameters
         if (args[3].toUpperCase().matches("I")) {
             // Set the root LOGGER to Level.INFO
             Configurator.setRootLevel(Level.INFO);
-            System.out.println(Configs.getInstance().getString("LOG_DECODED_INFO") + "\n");
+            LOGGER.info(LOG_DECODED_INFO);
         } else if (args[3].toUpperCase().matches("W")) {
             // Set the root LOGGER to Level.WARN
             Configurator.setRootLevel(Level.WARN);
-            System.out.println(Configs.getInstance().getString("LOG_DECODED_WARN") + "\n");
+            LOGGER.info(LOG_DECODED_WARN);
         } else if (args[3].toUpperCase().matches("D")) {
             // Set the root LOGGER to Level.DEBUG
             Configurator.setRootLevel(Level.DEBUG);
-            System.out.println(Configs.getInstance().getString("LOG_DECODED_DEBUG") + "\n");
+            LOGGER.info(LOG_DECODED_DEBUG);
         } else {
             // Set the root LOGGER to Level.INFO
             Configurator.setRootLevel(Level.INFO);
-            System.out.println(Configs.getInstance().getString("LOG_DECODED_UNKN") + "\n");
+            LOGGER.info(LOG_DECODED_UNKN);
         }
 
         try {
             if (args[0].toUpperCase().matches(Configs.getInstance().getString("MISC_METAR_M"))) {
-                LOGGER.info("Processing Metar data");
+                LOGGER.info(PROCESS_METAR_DATA);
                 station = args[1].toUpperCase();
                 metar = Weather.getMetar(station, args[2].toUpperCase(), args[0].toUpperCase());
             } else if (args[0].toUpperCase().matches(Configs.getInstance().getString("MISC_TAF_T"))) {
-                LOGGER.info("Processing Taf data");
+                LOGGER.info(PROCESS_TAF_DATA);
                 station = args[1].toUpperCase();
                 taf = Weather.getTaf(station, args[2].toUpperCase(), args[0].toUpperCase());
             } else {
-                System.out.println(Configs.getInstance().getString("LOG_DECODED_MSG_UNK_WTH_TYP"));
-                LOGGER.error(Configs.getInstance().getString("LOG_DECODED_MSG_UNK_WTH_TYP"));
-                System.out.println(Configs.getInstance().getString("LOG_DECODED_MSG_MET_PARM"));
-                LOGGER.error(Configs.getInstance().getString("LOG_DECODED_MSG_MET_PARM"));
-                System.out.println(Configs.getInstance().getString("LOG_DECODED_MSG_TAF_PARM"));
-                LOGGER.error(Configs.getInstance().getString("LOG_DECODED_MSG_TAF_PARM"));
+                LOGGER.fatal(MSG_UNK_WTH_TYP);
+                LOGGER.fatal(MSG_MET_PARM);
+                LOGGER.fatal(MSG_TAF_PARM);
             }
         } catch (UtilsException | IOException err) {
-            System.out.println(err + ": Check log file for details of error");
+            LOGGER.fatal(CHECK_LOG_FILE);
         }
     }
 }

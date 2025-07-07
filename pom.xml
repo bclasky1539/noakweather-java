@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>noakweather-java</groupId>
     <artifactId>noakweather-java</artifactId>
-    <version>0.1</version>
+    <version>0.2.1</version>
     <name>noakweather-java</name>
     <description>noakweather-java is a Java library for parsing raw weather data (e.g. METAR, TAF).</description>
     <packaging>jar</packaging>
