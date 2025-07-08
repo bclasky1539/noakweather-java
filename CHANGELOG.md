@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.2.2 - Date: July 7, 2025
+
+- SonarCloud maintainability issues in UtilsException, IndexedLinkedHashMap and UtilsDate classes
+
 ## Version 0.2.1 - Date: July 7, 2025
 
 - SonarCloud maintainability issues in NoakWeatherMain class

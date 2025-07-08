@@ -16,8 +16,11 @@
  */
 package noakweather.utils;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Objects;
 
 /**
  * Class representing the indexed linked hash map. It inherits from the
@@ -35,13 +38,45 @@ public class IndexedLinkedHashMap<K, V> extends LinkedHashMap<K, V> {
      */
     private static final long serialVersionUID = 1L;
 
-    ArrayList<K> al_Index = new ArrayList<>();
+    private transient ArrayList<K> indexList = new ArrayList<>();
 
     public IndexedLinkedHashMap(int initialCapacity) {
         super(initialCapacity);
     }
 
     public IndexedLinkedHashMap() {
+    }
+
+    /**
+     * Equals method override.
+     *
+     * @param obj
+     * @return value
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!super.equals(obj)) {
+            return false;
+        }
+        if (!(obj instanceof IndexedLinkedHashMap)) {
+            return false;
+        }
+ 
+        IndexedLinkedHashMap<?, ?> other = (IndexedLinkedHashMap<?, ?>) obj;
+        return Objects.equals(this.indexList, other.indexList);
+    }
+
+    /**
+     * Sets the hash.
+     *
+     * @return value
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), indexList);
     }
 
     /**
@@ -54,10 +89,9 @@ public class IndexedLinkedHashMap<K, V> extends LinkedHashMap<K, V> {
     @Override
     public V put(K key, V val) {
         if (!super.containsKey(key)) {
-            al_Index.add(key);
+            indexList.add(key);
         }
-        V returnValue = super.put(key, val);
-        return returnValue;
+        return super.put(key, val);
     }
 
     /**
@@ -67,17 +101,17 @@ public class IndexedLinkedHashMap<K, V> extends LinkedHashMap<K, V> {
      * @return index
      */
     public V getValueAtIndex(int i) {
-        return super.get(al_Index.get(i));
+        return super.get(indexList.get(i));
     }
 
     /**
-     * Get the value at index
+     * Get the key at index
      *
      * @param i
      * @return index
      */
     public K getKeyAtIndex(int i) {
-        return al_Index.get(i);
+        return indexList.get(i);
     }
 
     /**
@@ -87,6 +121,21 @@ public class IndexedLinkedHashMap<K, V> extends LinkedHashMap<K, V> {
      * @return index of key
      */
     public int getIndexOf(K key) {
-        return al_Index.indexOf(key);
+        return indexList.indexOf(key);
+    }
+
+    /**
+     * Called automatically during de-serialization - no impact on calling code
+     *
+     * @param in
+     * @return
+     */
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        // Rebuild the index from the deserialized map contents
+        indexList = new ArrayList<>();
+        for (K key : this.keySet()) {
+            indexList.add(key);
+        }
     }
 }
