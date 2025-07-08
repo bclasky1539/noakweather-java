@@ -15,6 +15,11 @@
  */
 package noakweather.utils;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.LinkedHashMap;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -194,5 +199,53 @@ public class UtilsExceptionTest {
             assertEquals("Test message", e.getMessage());
             assertEquals("Record info", e.getRecordException());
         }
+    }
+    
+    /**
+     * Test of equals method - LinkedHashMap but not IndexedLinkedHashMap
+    */
+    @Test
+    public void testEqualsLinkedHashMapButNotIndexed() {
+        System.out.println("testEqualsLinkedHashMapButNotIndexed");
+        IndexedLinkedHashMap<String, String> instance = new IndexedLinkedHashMap<>();
+        LinkedHashMap<String, String> regularMap = new LinkedHashMap<>();
+    
+        instance.put("key1", "value1");
+        regularMap.put("key1", "value1");
+    
+        boolean result = instance.equals(regularMap);
+        assertFalse(result); // Should be false because regularMap is not IndexedLinkedHashMap
+    }
+    
+    /**
+     * Test serialization and deserialization (tests readObject indirectly)
+    */
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testSerialization() throws Exception {
+        System.out.println("testSerialization");
+        IndexedLinkedHashMap<String, String> original = new IndexedLinkedHashMap<>();
+        original.put("key1", "value1");
+        original.put("key2", "value2");
+    
+        // Serialize
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(original);
+        oos.close();
+    
+        // Deserialize (this calls readObject internally)
+        ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+        ObjectInputStream ois = new ObjectInputStream(bais);
+        IndexedLinkedHashMap<String, String> deserialized = 
+            (IndexedLinkedHashMap<String, String>) ois.readObject();
+        ois.close();
+    
+        // Verify the deserialized object works correctly
+        assertEquals("value1", deserialized.getValueAtIndex(0));
+        assertEquals("value2", deserialized.getValueAtIndex(1));
+        assertEquals("key1", deserialized.getKeyAtIndex(0));
+        assertEquals("key2", deserialized.getKeyAtIndex(1));
+        assertEquals(original, deserialized);
     }
 }
