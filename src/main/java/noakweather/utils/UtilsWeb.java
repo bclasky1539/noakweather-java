@@ -17,6 +17,8 @@
 package noakweather.utils;
 
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 /**
@@ -27,6 +29,14 @@ import java.net.URL;
 public class UtilsWeb {
 
     /**
+     * Private constructor to prevent instantiation of utility class
+     *
+     */
+    private UtilsWeb() {
+        // Utility class - not meant to be instantiated
+    }
+
+    /**
      * Parses the provided string to a valid web address, that can be used to
      * fetch information
      *
@@ -35,15 +45,11 @@ public class UtilsWeb {
      * @throws UtilsException
      */
     public static URL getUrl(String urlString) throws UtilsException {
-        URL url = null;
-
-        try {
-            url = new URL(urlString);
-        } catch (MalformedURLException uRLExc) {
-            // If urlString is null or length is 0 then catch MalformedURLException
-            throw new UtilsException("URL not provided", uRLExc);
+         try {
+            URI uri = new URI(urlString);
+            return uri.toURL();
+        } catch (URISyntaxException | MalformedURLException | NullPointerException | IllegalArgumentException exc) {
+            throw new UtilsException("URL not provided", exc);
         }
-
-        return url;
     }
 }

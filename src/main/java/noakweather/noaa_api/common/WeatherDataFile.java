@@ -71,8 +71,8 @@ public class WeatherDataFile {
      */
     public Optional<String> findMetarData(String stationCode) {
         return records.stream()
-            .filter(record -> record.getType() == WeatherType.METAR)
-            .filter(record -> record.getStationCode().equals(stationCode))
+            .filter(weatherRecord -> weatherRecord.getType() == WeatherType.METAR)
+            .filter(weatherRecord -> weatherRecord.getStationCode().equals(stationCode))
             .map(WeatherRecord::getFormattedForParser)
             .findFirst();
     }
@@ -85,8 +85,8 @@ public class WeatherDataFile {
      */
     public Optional<String> findTafData(String stationCode) {
         return records.stream()
-            .filter(record -> record.getType() == WeatherType.TAF)
-            .filter(record -> record.getStationCode().equals(stationCode))
+            .filter(weatherRecord -> weatherRecord.getType() == WeatherType.TAF)
+            .filter(weatherRecord -> weatherRecord.getStationCode().equals(stationCode))
             .map(WeatherRecord::getFormattedForParser)
             .findFirst();
     }

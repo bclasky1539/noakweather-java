@@ -30,7 +30,9 @@ public class WindDir {
     public static final Logger LOGGER
             = LogManager.getLogger(WindDir.class.getName());
 
-    public WindDir() {
+    // Private constructor to prevent instantiation of utility class
+    private WindDir() {
+        // Utility class - not meant to be instantiated
     }
 
     /**
@@ -43,13 +45,13 @@ public class WindDir {
     public static String getFormattedWindDir(Integer degrees) {
         Configs config = Configs.getInstance();
 
-        LOGGER.debug("Input degrees: " + degrees);
+        LOGGER.debug("Input degrees: {}", degrees);
 
         // Normalize degrees to 0-360 range
         degrees = ((degrees % 360) + 360) % 360;
 
         // Define direction names in clockwise order starting from North
-        final String[] DIRECTION_KEYS = {
+        final String[] directionKeys = {
             "WIND_DIR_NORTH",
             "WIND_DIR_NORTH_NORTH_EAST",
             "WIND_DIR_NORTH_EAST",
@@ -71,7 +73,6 @@ public class WindDir {
         // Each direction covers 22.5 degrees, calculate index directly
         int index = (int)Math.round(degrees / 22.5) % 16;
 
-        return config.getString(DIRECTION_KEYS[index]);
+        return config.getString(directionKeys[index]);
     }
-
 }
