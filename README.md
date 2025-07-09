@@ -1,4 +1,9 @@
 [![Java CI with Maven](https://github.com/bclasky1539/noakweather-java/actions/workflows/maven.yml/badge.svg)](https://github.com/bclasky1539/noakweather-java/actions/workflows/maven.yml)
+[![Sonar verify](https://github.com/bclasky1539/noakweather-java/actions/workflows/sonarcloud.yml/badge.svg)](https://github.com/bclasky1539/noakweather-java/actions/workflows/sonarcloud.yml)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=bclasky1539_noakweather-java&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=bclasky1539_noakweather-java)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=bclasky1539_noakweather-java&metric=coverage&branch=main)](https://sonarcloud.io/summary/new_code?id=bclasky1539_noakweather-java)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=bclasky1539_noakweather-java&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=bclasky1539_noakweather-java)
+[![License](https://img.shields.io/github/license/bclasky1539/noakweather-java)](https://github.com/bclasky1539/noakweather-java/blob/main/LICENSE)
 
 # noakweather-java
 noakweather-java project
