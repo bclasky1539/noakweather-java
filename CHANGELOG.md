@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.2.5 - Date: July 11, 2025
+
+- SonarCloud maintainability issues in WthItemHandlers class
+
 ## Version 0.2.4 - Date: July 11, 2025
 
 - SonarCloud maintainability issues in Group, Tempo, Becoming, Prob and FromGroup classes
