@@ -34,6 +34,10 @@ public class Becoming extends Group {
     private static final Logger LOGGER
             = LogManager.getLogger(Group.class.getName());
 
+    // Config string constant to fix conditional method invocation
+    private static final String MSG_EXTENDED_DECODED_BECMG = 
+        Configs.getInstance().getString("EXTENDED_DECODED_BECMG");
+
     public Becoming() {
         LOGGER.debug("in Becoming constructor");
     }
@@ -42,26 +46,25 @@ public class Becoming extends Group {
      * Set the becoming information and return the natural language in human
      * readable form
      *
-     * @param token
-     * @param monthString
-     * @param yearString
-     * @param groupWeathHandlers
-     * @return index
-     * @throws noakweather.utils.UtilsException
+     * @param token the weather token to process
+     * @param monthString the month string for date processing
+     * @param yearString the year string for date processing
+     * @param groupWeathHandlers map of regex patterns to their corresponding handler information
+     * @return natural language string representation of the becoming conditions
+     * @throws noakweather.utils.UtilsException if error occurs during pattern processing
      */
     public String setBecomingItems(String token, String monthString, String yearString,
             IndexedLinkedHashMap<Pattern, Pair<String, Boolean>> groupWeathHandlers) throws UtilsException {
 
-        LOGGER.debug("token: #" + token + "#");
-        LOGGER.debug("monthString: #" + monthString + "#");
-        LOGGER.debug("yearString: #" + yearString + "#\n");
+        LOGGER.debug("token: #{}", token);
+        LOGGER.debug("monthString: #{}", monthString);
+        LOGGER.debug("yearString: #{}\n", yearString);
 
         setMonthString(monthString);
         setYearString(yearString);
 
         parseGroupHandlers(token, groupWeathHandlers);
 
-        return getNaturalLanguageString(Configs.getInstance()
-                .getString("EXTENDED_DECODED_BECMG"));
+        return getNaturalLanguageString(MSG_EXTENDED_DECODED_BECMG);
     }
 }

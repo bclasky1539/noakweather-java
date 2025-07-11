@@ -35,6 +35,10 @@ public class Prob extends Group {
     private static final Logger LOGGER
             = LogManager.getLogger(Prob.class.getName());
 
+    // Config string constant to fix conditional method invocation
+    private static final String MSG_EXTENDED_DECODED_PROB = 
+        Configs.getInstance().getString("EXTENDED_DECODED_PROB");
+
     public Prob() {
         LOGGER.debug("in Prob constructor");
     }
@@ -43,21 +47,21 @@ public class Prob extends Group {
      * Set probability information and return the natural language in human
      * readable form
      *
-     * @param group
-     * @param token
-     * @param monthString
-     * @param yearString
-     * @param groupWeathHandlers
-     * @return index
-     * @throws noakweather.utils.UtilsException
+     * @param group the group to process
+     * @param token the weather token to process
+     * @param monthString the month string for date processing
+     * @param yearString the year string for date processing
+     * @param groupWeathHandlers map of regex patterns to their corresponding handler information
+     * @return natural language string representation of the prob conditions
+     * @throws noakweather.utils.UtilsException if error occurs during pattern processing
      */
     public String setProbItems(String group, String token, String monthString, String yearString,
             IndexedLinkedHashMap<Pattern, Pair<String, Boolean>> groupWeathHandlers) throws UtilsException {
 
-        LOGGER.debug("Inside setProbItems group processing: #" + group + "#");
-        LOGGER.debug("Inside setProbItems token processing: #" + token + "#");
-        LOGGER.debug("Inside setProbItems monthString: #" + monthString + "#");
-        LOGGER.debug("Inside setProbItems yearString: #" + yearString + "#\n");
+        LOGGER.debug("Inside setProbItems group processing: #{}", group);
+        LOGGER.debug("Inside setProbItems token processing: #{}", token);
+        LOGGER.debug("Inside setProbItems monthString: #{}", monthString);
+        LOGGER.debug("Inside setProbItems yearString: #{}\n", yearString);
 
         setMonthString(monthString);
         setYearString(yearString);
@@ -65,6 +69,6 @@ public class Prob extends Group {
         parseGroupHandlers(token, groupWeathHandlers);
 
         return getNaturalLanguageString(group.substring(4)
-                + Configs.getInstance().getString("EXTENDED_DECODED_PROB"));
+                + MSG_EXTENDED_DECODED_PROB);
     }
 }
