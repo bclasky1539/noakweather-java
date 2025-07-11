@@ -32,7 +32,7 @@ import org.javatuples.Pair;
 public class Becoming extends Group {
 
     private static final Logger LOGGER
-            = LogManager.getLogger(Group.class.getName());
+            = LogManager.getLogger(Becoming.class.getName());
 
     // Config string constant to fix conditional method invocation
     private static final String MSG_EXTENDED_DECODED_BECMG = 
