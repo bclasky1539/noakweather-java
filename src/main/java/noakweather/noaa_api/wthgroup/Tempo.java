@@ -35,6 +35,10 @@ public class Tempo extends Group {
     private static final Logger LOGGER
             = LogManager.getLogger(Tempo.class.getName());
 
+    // Config string constant to fix conditional method invocation
+    private static final String MSG_EXTENDED_DECODED_TEMPO = 
+        Configs.getInstance().getString("EXTENDED_DECODED_TEMPO");
+
     public Tempo() {
         LOGGER.debug("in Tempo constructor");
     }
@@ -43,25 +47,25 @@ public class Tempo extends Group {
      * Set temporary information and return the natural language in human
      * readable form
      *
-     * @param token
-     * @param monthString
-     * @param yearString
-     * @param groupWeathHandlers
-     * @return index
-     * @throws noakweather.utils.UtilsException
+     * @param token the weather token to process
+     * @param monthString the month string for date processing
+     * @param yearString the year string for date processing
+     * @param groupWeathHandlers map of regex patterns to their corresponding handler information
+     * @return natural language string representation of the tempo conditions
+     * @throws noakweather.utils.UtilsException if error occurs during pattern processing
      */
     public String setTempoItems(String token, String monthString, String yearString,
             IndexedLinkedHashMap<Pattern, Pair<String, Boolean>> groupWeathHandlers) throws UtilsException {
 
-        LOGGER.debug("Inside setTempoItems token processing: #" + token + "#");
-        LOGGER.debug("Inside setTempoItems monthString: #" + monthString + "#");
-        LOGGER.debug("Inside setTempoItems yearString: #" + yearString + "#\n");
+        LOGGER.debug("Inside setTempoItems token processing: #{}", token);
+        LOGGER.debug("Inside setTempoItems monthString: #{}", monthString);
+        LOGGER.debug("Inside setTempoItems yearString: #{}\n", yearString);
 
         setMonthString(monthString);
         setYearString(yearString);
 
         parseGroupHandlers(token, groupWeathHandlers);
 
-        return getNaturalLanguageString(Configs.getInstance().getString("EXTENDED_DECODED_TEMPO"));
+        return getNaturalLanguageString(MSG_EXTENDED_DECODED_TEMPO);
     }
 }

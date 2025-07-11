@@ -62,6 +62,75 @@ public class Group {
     private static final Logger LOGGER
             = LogManager.getLogger(Group.class.getName());
 
+    // Logging constants for parseGroupHandlers method
+    private static final String MSG_MATCH_DECODED_TOKEN_PROCESSING = 
+        Configs.getInstance().getString("MATCH_DECODED_TOKEN_PROCESSING");
+    private static final String MSG_MATCH_DECODED_PATTERN_I = 
+        Configs.getInstance().getString("MATCH_DECODED_PATTERN_I");
+    private static final String MSG_MATCH_DECODED_MATCHER_GROUP_CNT = 
+        Configs.getInstance().getString("MATCH_DECODED_MATCHER_GROUP_CNT");
+    private static final String MSG_MATCH_DECODED_MATCHER_GROUP_0 = 
+        Configs.getInstance().getString("MATCH_DECODED_MATCHER_GROUP_0");
+    private static final String MSG_MATCH_DECODED_CAPTURE_GROUP_NUMBER = 
+        Configs.getInstance().getString("MATCH_DECODED_CAPTURE_GROUP_NUMBER");
+    private static final String MSG_MATCH_DECODED_CAPTURED_TEXT = 
+        Configs.getInstance().getString("MATCH_DECODED_CAPTURED_TEXT");
+    private static final String MSG_MATCH_DECODED_TOKEN_AFTER_LAST_MATCH = 
+        Configs.getInstance().getString("MATCH_DECODED_TOKEN_AFTER_LAST_MATCH");
+    private static final String MSG_MATCH_DECODED_PATTERN = 
+        Configs.getInstance().getString("MATCH_DECODED_PATTERN");
+
+    // Logging constants for detGroupItems method
+    private static final String MSG_LOG_DECODED_FOUND_VALID_TO_FROM_TP = 
+        Configs.getInstance().getString("LOG_DECODED_FOUND_VALID_TO_FROM_TP");
+    private static final String MSG_LOG_DECODED_FOUND_WIND = 
+        Configs.getInstance().getString("LOG_DECODED_FOUND_WIND");
+    private static final String MSG_LOG_DECODED_FOUND_VISIBILITY = 
+        Configs.getInstance().getString("LOG_DECODED_FOUND_VISIBILITY");
+    private static final String MSG_LOG_DECODED_FOUND_RVR = 
+        Configs.getInstance().getString("LOG_DECODED_FOUND_RVR");
+    private static final String MSG_LOG_DECODED_FOUND_WEATHER_GROUPS = 
+        Configs.getInstance().getString("LOG_DECODED_FOUND_WEATHER_GROUPS");
+    private static final String MSG_LOG_DECODED_WEATHER_CONDITIONS = 
+        Configs.getInstance().getString("LOG_DECODED_WEATHER_CONDITIONS");
+    private static final String MSG_LOG_DECODED_FOUND_SKY_CONDITIONS = 
+        Configs.getInstance().getString("LOG_DECODED_FOUND_SKY_CONDITIONS");
+    private static final String MSG_LOG_DECODED_SKY_CONDITIONS = 
+        Configs.getInstance().getString("LOG_DECODED_SKY_CONDITIONS");
+    private static final String MSG_LOG_DECODED_FOUND_TEMPERATURE_DEWPOINT = 
+        Configs.getInstance().getString("LOG_DECODED_FOUND_TEMPERATURE_DEWPOINT");
+    private static final String MSG_LOG_DECODED_FOUND_PRESSURE = 
+        Configs.getInstance().getString("LOG_DECODED_FOUND_PRESSURE");
+    private static final String MSG_LOG_DECODED_FOUND_NO_SIGNIFICANT_CHANGE = 
+        Configs.getInstance().getString("LOG_DECODED_FOUND_NO_SIGNIFICANT_CHANGE");
+    private static final String MSG_LOG_DECODED_FOUND_UNPARSED_DATA = 
+        Configs.getInstance().getString("LOG_DECODED_FOUND_UNPARSED_DATA");
+
+    // Logging constants for date/time methods
+    private static final String MSG_LOC_TIME_DECODED_VALID_FROM_DATE = 
+        Configs.getInstance().getString("LOC_TIME_DECODED_VALID_FROM_DATE");
+    private static final String MSG_LOC_TIME_DECODED_VALID_TO_DATE = 
+        Configs.getInstance().getString("LOC_TIME_DECODED_VALID_TO_DATE");
+    private static final String MSG_LOC_TIME_DECODED_UNABLE_PARSE_DATE_VALUE = 
+        Configs.getInstance().getString("LOC_TIME_DECODED_UNABLE_PARSE_DATE_VALUE");
+
+    // Constants for getNaturalLanguageString method
+    private static final String MSG_EXTENDED_DECODED_FM = 
+        Configs.getInstance().getString("EXTENDED_DECODED_FM");
+    private static final String MSG_WEATHER_DECODED_CAVOK = 
+        Configs.getInstance().getString("WEATHER_DECODED_CAVOK");
+    private static final String MSG_MSRMNT_DECODED_MILES = 
+        Configs.getInstance().getString("MSRMNT_DECODED_MILES");
+    private static final String MSG_MSRMNT_DECODED_KILOMETERS = 
+        Configs.getInstance().getString("MSRMNT_DECODED_KILOMETERS");
+    
+    // String literal constants for switch cases and method parameters
+    private static final String TYPE_UNPARSED = "unparsed";
+
+    // Named group constants for regex groups
+    private static final String GROUP_UNPARSED = "unparsed";
+    private static final String GROUP_EVALTIME = "evaltime";
+
     /**
      * Constructor
      */
@@ -85,62 +154,196 @@ public class Group {
     }
 
     /**
-     * Parse the group handlers information
-     *
-     * @param token
-     * @param handlers
-     * @throws noakweather.utils.UtilsException
-     */
+    * Parse the group handlers information - Refactored for reduced cognitive complexity
+    *
+    * @param token the weather token to be parsed
+    * @param handlers map of regex patterns to their corresponding handler information
+    * @throws UtilsException if error occurs during pattern processing
+    */
     protected void parseGroupHandlers(String token, IndexedLinkedHashMap<Pattern, Pair<String, Boolean>> handlers) throws UtilsException {
-        boolean isFound = false;
-        while (!token.isEmpty()) {
-            LOGGER.debug("\n");
-            LOGGER.debug(Configs.getInstance().getString("MATCH_DECODED_TOKEN_PROCESSING")
-                    + " #" + token + "#");
-            handlers.keySet();
-            for (Pattern i : handlers.keySet()) {
-                LOGGER.debug(Configs.getInstance().getString("MATCH_DECODED_PATTERN_I")
-                        + " #" + i + "#  #" + handlers.get(i) + "#");
-                Matcher matcher = i.matcher(token);
-                while (matcher.find()) {
-                    isFound = true;
-                    LOGGER.debug(Configs.getInstance().getString("MATCH_DECODED_MATCHER_GROUP_CNT")
-                            + " " + matcher.groupCount());
-                    LOGGER.debug(Configs.getInstance().getString("MATCH_DECODED_MATCHER_GROUP_0")
-                            + " #" + matcher.group(0) + "#");
-                    if (matcher.group(0).equals("")) {
-                        break;
-                    }
-                    for (int j = 1; j <= matcher.groupCount(); j++) {
-                        LOGGER.debug(Configs.getInstance()
-                                .getString("MATCH_DECODED_CAPTURE_GROUP_NUMBER")
-                                + " " + Configs.getInstance()
-                                        .getString("MATCH_DECODED_CAPTURE_GROUP_NUMBER")
-                                + " " + j + "   " + Configs.getInstance()
-                                        .getString("MATCH_DECODED_CAPTURED_TEXT")
-                                + " #" + matcher.group(j) + "#");
-                    }
-                    detGroupItems(handlers.get(i).getValue0(), matcher);
-                    token = matcher.replaceFirst("").trim();
-                    //This is necessary to make sure the last token is properly processed
-                    if (token.length() > 0) {
-                        token += " ";
-                    }
-                    LOGGER.debug(Configs.getInstance().getString("MATCH_DECODED_TOKEN_AFTER_LAST_MATCH")
-                            + " #" + token);
-                    LOGGER.debug(Configs.getInstance().getString("MATCH_DECODED_PATTERN")
-                            + " " + handlers.get(i).getValue1());
-                    if (handlers.get(i).getValue1().equals(false)) {
-                        break;
-                    }
-                    matcher = i.matcher(token);
-                }
-                if (isFound) {
-                    isFound = false;
-                    break;
-                }
+        String remainingToken = token;
+        
+        while (!remainingToken.isEmpty()) {
+            logTokenProcessing(remainingToken);
+            String processedToken = processAllPatterns(remainingToken, handlers);
+            
+            // Prevent infinite loop - if no progress made, break
+            if (processedToken.equals(remainingToken)) {
+                LOGGER.warn("No pattern matched token: #{}, stopping processing", remainingToken);
+                break;
+            }
+            
+            remainingToken = processedToken;
+        }
+    }
+
+    /**
+     * Log token processing information
+     *
+     * @param token the current token being processed
+     */
+    private void logTokenProcessing(String token) {
+        LOGGER.debug("\n");
+        LOGGER.debug("{}#{}", MSG_MATCH_DECODED_TOKEN_PROCESSING, token);
+    }
+
+    /**
+     * Process all patterns against the token and return the modified token
+     *
+     * @param token the token to process against all patterns
+     * @param handlers map of regex patterns to their corresponding handler information
+     * @return the modified token after pattern processing, or original token if no matches
+     * @throws UtilsException if error occurs during pattern processing
+     */
+    private String processAllPatterns(String token, IndexedLinkedHashMap<Pattern, Pair<String, Boolean>> handlers) throws UtilsException {
+        for (Pattern pattern : handlers.keySet()) {
+            String modifiedToken = processSinglePattern(token, pattern, handlers.get(pattern));
+            if (!modifiedToken.equals(token)) {
+                return modifiedToken; // Pattern matched and modified token
             }
         }
+        return token; // No patterns matched
+    }
+
+    /**
+     * Process a single pattern against the token
+     *
+     * @param token the token to match against the pattern
+     * @param pattern the regex pattern to apply
+     * @param handlerInfo the handler information containing type and continuation flag
+     * @return the modified token after pattern processing, or original token if no match
+     * @throws UtilsException if error occurs during pattern processing
+     */
+    private String processSinglePattern(String token, Pattern pattern, Pair<String, Boolean> handlerInfo) throws UtilsException {
+        logPatternProcessing(pattern, handlerInfo);
+        
+        Matcher matcher = pattern.matcher(token);
+        if (!matcher.find()) {
+            return token; // No match found
+        }
+        
+        return processMatches(token, matcher, handlerInfo);
+    }
+
+    /**
+     * Log pattern processing information
+     *
+     * @param pattern the regex pattern being processed
+     * @param handlerInfo the handler information for this pattern
+     */
+    private void logPatternProcessing(Pattern pattern, Pair<String, Boolean> handlerInfo) {
+        LOGGER.debug("{}#{} #{}", MSG_MATCH_DECODED_PATTERN_I, pattern, handlerInfo);
+    }
+
+    /**
+     * Process all matches for a pattern and return modified token
+     *
+     * @param token the original token to process
+     * @param matcher the regex matcher containing the match results
+     * @param handlerInfo the handler information containing type and continuation flag
+     * @return the modified token after processing all matches
+     * @throws UtilsException if error occurs during match processing
+     */
+    private String processMatches(String token, Matcher matcher, Pair<String, Boolean> handlerInfo) throws UtilsException {
+        String modifiedToken = token;
+        
+        do {
+            if (isEmptyMatch(matcher)) {
+                break;
+            }
+            
+            logMatchDetails(matcher);
+            detGroupItems(handlerInfo.getValue0(), matcher);
+            
+            modifiedToken = updateTokenAfterMatch(matcher);
+            logTokenAfterMatch(modifiedToken, handlerInfo);
+            
+            if (!shouldContinueMatching(handlerInfo)) {
+                break;
+            }
+            
+            matcher = matcher.pattern().matcher(modifiedToken);
+            
+        } while (matcher.find());
+        
+        return modifiedToken;
+    }
+
+    /**
+     * Check if the match is empty (which could cause infinite loops)
+     *
+     * @param matcher the regex matcher to check
+     * @return true if the match is empty, false otherwise
+     */
+    private boolean isEmptyMatch(Matcher matcher) {
+        return matcher.group(0).isEmpty();
+    }
+
+    /**
+     * Log match details including group count and captured groups
+     *
+     * @param matcher the regex matcher containing match information
+     */
+    private void logMatchDetails(Matcher matcher) {
+        LOGGER.debug("{} {}", MSG_MATCH_DECODED_MATCHER_GROUP_CNT, matcher.groupCount());
+        LOGGER.debug("{}#{}", MSG_MATCH_DECODED_MATCHER_GROUP_0, matcher.group(0));
+        
+        logCapturedGroups(matcher);
+    }
+
+    /**
+     * Log all captured groups
+     *
+     * @param matcher the regex matcher containing captured group information
+     */
+    private void logCapturedGroups(Matcher matcher) {
+        for (int j = 1; j <= matcher.groupCount(); j++) {
+            LOGGER.debug("{} {} {} {} #{}", 
+            MSG_MATCH_DECODED_CAPTURE_GROUP_NUMBER,
+            MSG_MATCH_DECODED_CAPTURE_GROUP_NUMBER,
+            j,
+            MSG_MATCH_DECODED_CAPTURED_TEXT,
+            matcher.group(j));
+        }
+    }
+
+    /**
+     * Update token after a successful match
+     *
+     * @param token the original token
+     * @param matcher the regex matcher used to replace the matched portion
+     * @return the updated token with matched portion removed and properly formatted
+     */
+    private String updateTokenAfterMatch(Matcher matcher) {
+        String updatedToken = matcher.replaceFirst("").trim();
+        
+        // Add space if token still has content to ensure proper processing
+        if (updatedToken.length() > 0) {
+            updatedToken += " ";
+        }
+        
+        return updatedToken;
+    }
+
+    /**
+     * Log token state after match processing
+     *
+     * @param token the token after match processing
+     * @param handlerInfo the handler information for the current pattern
+     */
+    private void logTokenAfterMatch(String token, Pair<String, Boolean> handlerInfo) {
+        LOGGER.debug("{}#{}", MSG_MATCH_DECODED_TOKEN_AFTER_LAST_MATCH, token);
+        LOGGER.debug("{} {}", MSG_MATCH_DECODED_PATTERN, handlerInfo.getValue1());
+    }
+
+    /**
+     * Determine if pattern matching should continue based on handler configuration
+     *
+     * @param handlerInfo the handler information containing continuation flag
+     * @return true if pattern matching should continue, false otherwise
+     */
+    private boolean shouldContinueMatching(Pair<String, Boolean> handlerInfo) {
+        return !handlerInfo.getValue1().equals(false);
     }
 
     /**
@@ -153,12 +356,12 @@ public class Group {
         switch (type) {
             case "valtmper":
                 // We have a valid to and from time period
-                LOGGER.debug(Configs.getInstance().getString("LOG_DECODED_FOUND_VALID_TO_FROM_TP"));
+                LOGGER.debug(MSG_LOG_DECODED_FOUND_VALID_TO_FROM_TP);
                 setValidToFromDateInfo(value);
                 break;
             case "wind":
                 // We have a wind
-                LOGGER.debug(Configs.getInstance().getString("LOG_DECODED_FOUND_WIND"));
+                LOGGER.debug(MSG_LOG_DECODED_FOUND_WIND);
                 if (windGroup == null) {
                     windGroup = new Wind();
                 }
@@ -166,7 +369,7 @@ public class Group {
                 break;
             case "visibility":
                 // We have visibility
-                LOGGER.debug(Configs.getInstance().getString("LOG_DECODED_FOUND_VISIBILITY"));
+                LOGGER.debug(MSG_LOG_DECODED_FOUND_VISIBILITY);
                 if (visibilityGroup == null) {
                     visibilityGroup = new Visibility();
                 }
@@ -174,15 +377,11 @@ public class Group {
                 break;
             case "runway":
                 // We have Runaway group
-                LOGGER.debug(Configs.getInstance().getString("LOG_DECODED_FOUND_RVR"));
-                //if (runwayVisualRanges == null) {
-                //    runwayVisualRanges = new ConcurrentHashMap<>();
-                //}
-                //parseRunVisualRange(value);
+                LOGGER.debug(MSG_LOG_DECODED_FOUND_RVR);
                 break;
             case "presentweather":
                 // We have Present Weather
-                LOGGER.debug(Configs.getInstance().getString("LOG_DECODED_FOUND_WEATHER_GROUPS"));
+                LOGGER.debug(MSG_LOG_DECODED_FOUND_WEATHER_GROUPS);
                 if (weatherConditionsGroup == null) {
                     weatherConditionsGroup = new IndexedLinkedHashMap<>();
                 }
@@ -190,12 +389,12 @@ public class Group {
                 weatherConditionGroup.setWeatherConditionItems(value);
                 weatherConditionsGroup.put(weatherConditionGroup,
                         weatherConditionGroup.getNaturalLanguageString());
-                LOGGER.debug(Configs.getInstance().getString("LOG_DECODED_WEATHER_CONDITIONS")
-                        + " " + weatherConditionGroup.getNaturalLanguageString());
+                LOGGER.debug("{} {}", MSG_LOG_DECODED_WEATHER_CONDITIONS,
+                    weatherConditionGroup.getNaturalLanguageString());
                 break;
             case "skycondition":
                 // We have a sky condition
-                LOGGER.debug(Configs.getInstance().getString("LOG_DECODED_FOUND_SKY_CONDITIONS"));
+                LOGGER.debug(MSG_LOG_DECODED_FOUND_SKY_CONDITIONS);
                 if (skyConditionsGroup == null) {
                     skyConditionsGroup = new IndexedLinkedHashMap<>();
                 }
@@ -205,12 +404,12 @@ public class Group {
                 skyConditionsGroup.put(skyConditionGroup,
                         String.valueOf(skyCondIndex) + " "
                         + skyConditionGroup.getNaturalLanguageString());
-                LOGGER.debug(Configs.getInstance().getString("LOG_DECODED_SKY_CONDITIONS")
-                        + " " + skyConditionGroup.getNaturalLanguageString());
+                LOGGER.debug("{} {}", MSG_LOG_DECODED_SKY_CONDITIONS,
+                    skyConditionGroup.getNaturalLanguageString());
                 break;
             case "tempdewpoint":
                 // We have Temperature / Dew Point
-                LOGGER.debug(Configs.getInstance().getString("LOG_DECODED_FOUND_TEMPERATURE_DEWPOINT"));
+                LOGGER.debug(MSG_LOG_DECODED_FOUND_TEMPERATURE_DEWPOINT);
                 if (temperatureGroup == null) {
                     temperatureGroup = new Temperature();
                 }
@@ -218,7 +417,7 @@ public class Group {
                 break;
             case "altimeter":
                 // We have pressure
-                LOGGER.debug(Configs.getInstance().getString("LOG_DECODED_FOUND_PRESSURE"));
+                LOGGER.debug(MSG_LOG_DECODED_FOUND_PRESSURE);
                 if (pressureGroup == null) {
                     pressureGroup = new Pressure();
                 }
@@ -226,12 +425,11 @@ public class Group {
                 break;
             case "nosigchng":
                 // We have no significant change
-                LOGGER.debug(Configs.getInstance().getString("LOG_DECODED_FOUND_NO_SIGNIFICANT_CHANGE"));
-                //setIsNoSignificantChange(true);
+                LOGGER.debug(MSG_LOG_DECODED_FOUND_NO_SIGNIFICANT_CHANGE);
                 break;
-            case "unparsed":
+            case TYPE_UNPARSED:
                 // We have Unparsed Data
-                LOGGER.debug(Configs.getInstance().getString("LOG_DECODED_FOUND_UNPARSED_DATA"));
+                LOGGER.debug(MSG_LOG_DECODED_FOUND_UNPARSED_DATA);
                 if (parseString == null) {
                     parseString = new ArrayList<>();
                 }
@@ -253,8 +451,7 @@ public class Group {
                 Group.this.setValidFromDate(UtilsDate.setDate(token.substring(0, 2),
                         token.substring(2, 4), token.substring(4, 6),
                         monthString, yearString));
-                LOGGER.debug(Configs.getInstance().getString("LOC_TIME_DECODED_VALID_FROM_DATE")
-                        + " " + getValidFromDate() + "\n");
+                LOGGER.debug("{} {}\n", MSG_LOC_TIME_DECODED_VALID_FROM_DATE, getValidFromDate());
             } catch (NumberFormatException | UtilsException e) {
                 String errMsg = Configs.getInstance()
                         .getString("LOC_TIME_DECODED_UNABLE_PARSE_DATE_VALUE") + " " + e;
@@ -269,134 +466,253 @@ public class Group {
      * @param token
      */
     protected void setValidToFromDateInfo(Matcher token) {
-        if (token.group("bvaltime") != null && token.group("evaltime") != null) {
+        if (token.group("bvaltime") != null && token.group(GROUP_EVALTIME) != null) {
             // 1918/2018 means it is valid from the 19th 1800Z to the 20th 1800Z
             try {
                 setValidFromDate(UtilsDate.setDate(token.group("bvaltime").substring(0, 2),
                         token.group("bvaltime").substring(2, 4), "00",
                         monthString, yearString));
-                setValidToDate(UtilsDate.setDate(token.group("evaltime").substring(0, 2),
-                        token.group("evaltime").substring(2, 4), "00",
+                setValidToDate(UtilsDate.setDate(token.group(GROUP_EVALTIME).substring(0, 2),
+                        token.group(GROUP_EVALTIME).substring(2, 4), "00",
                         monthString, yearString));
-                LOGGER.debug(Configs.getInstance().getString("LOC_TIME_DECODED_VALID_FROM_DATE")
-                        + " " + getValidFromDate());
-                LOGGER.debug(Configs.getInstance().getString("LOC_TIME_DECODED_VALID_TO_DATE")
-                        + " " + getValidToDate() + "\n");
+                LOGGER.debug("{} {}", MSG_LOC_TIME_DECODED_VALID_FROM_DATE, getValidFromDate());
+                LOGGER.debug("{} {}\n", MSG_LOC_TIME_DECODED_VALID_TO_DATE, getValidToDate());
             } catch (NumberFormatException | UtilsException e) {
-                String errMsg = Configs.getInstance()
-                        .getString("LOC_TIME_DECODED_UNABLE_PARSE_DATE_VALUE") + " " + e;
+                String errMsg = MSG_LOC_TIME_DECODED_UNABLE_PARSE_DATE_VALUE + " " + e;
                 LOGGER.error(errMsg);
             }
         }
     }
 
     /**
-     * Get the natural language in human readable form This method will return a
+     * Get the natural language in human readable form. This method will return a
      * string that represents this weather condition using natural language (as
      * opposed to METAR)
      *
-     * @param groupString
+     * @param groupString the group string identifier
      * @return a string that represents the sky condition in natural language
      */
     protected String getNaturalLanguageString(String groupString) {
-        String temp = groupString;
+        StringBuilder result = new StringBuilder(groupString);
 
-        if (groupString.equals(Configs.getInstance()
-                .getString("EXTENDED_DECODED_FM"))) {
-            temp += " " + validFromDate;
+        appendDateInfo(result, groupString);
+        appendWindInfo(result);
+        appendVisibilityInfo(result);
+        appendPressureInfo(result);
+        appendSkyConditionsInfo(result);
+        appendWeatherConditionsInfo(result);
+        appendUnparsedDataInfo(result);
+
+        result.append("\n");
+        return result.toString();
+    }
+
+    /**
+     * Append date information to the result string
+     *
+     * @param result the StringBuilder to append to
+     * @param groupString the group string to check for FM type
+     */
+    private void appendDateInfo(StringBuilder result, String groupString) {
+        if (groupString.equals(MSG_EXTENDED_DECODED_FM)) {
+            result.append(" ").append(validFromDate);
         } else {
-            temp += " from " + validFromDate + " to " + validToDate;
+            result.append(" from ").append(validFromDate).append(" to ").append(validToDate);
+        }
+    }
+
+    /**
+     * Append wind information to the result string
+     *
+     * @param result the StringBuilder to append to
+     */
+    private void appendWindInfo(StringBuilder result) {
+        if (windGroup == null) {
+            return;
         }
 
-        if (windGroup != null) {
-            if (windGroup.getWindNotDetermined() == null) {
-                if (windGroup.isWindDirectionIsVariable()) {
-                    temp += "\n     Wind Direction is variable";
-                } else if (windGroup.isWindDirectionIsVarGtrSix()) {
-                    temp += "\n     Wind Direction is variable (greater than 6 knots)";
-                    temp += "  Variable between "
-                            + windGroup.getwindDirectionVarOneCompass() + " and "
-                            + windGroup.getwindDirectionVarTwoCompass() + " ("
-                            + windGroup.getWindDirectionVarOne() + " degrees and "
-                            + windGroup.getWindDirectionVarTwo() + " degrees)";
-                } else {
-                    temp += "\n     Wind dir : "
-                            + windGroup.getWindDirectionCompass() + " ("
-                            + windGroup.getWindDirection() + " degrees)";
-                }
-                temp += "\n     Wind speed : "
-                        + windGroup.getWindSpeedInMPH() + " mph, "
-                        + windGroup.getWindSpeedInKnots() + " knots";
-                temp += "\n     Wind gusts : "
-                        + windGroup.getWindGustsInMPH() + " mph, "
-                        + windGroup.getWindGustsInKnots() + " knots";
-            } else {
-                temp
-                        += "  Wind : The wind direction and speed cannot be determined";
-            }
+        if (windGroup.getWindNotDetermined() != null) {
+            result.append("  Wind : The wind direction and speed cannot be determined");
+            return;
         }
 
-        if (visibilityGroup != null) {
-            if (visibilityGroup.isCavok()) {
-                temp += "\n     Visibility : "
-                        + Configs.getInstance().getString("WEATHER_DECODED_CAVOK");
-            } else if (visibilityGroup.isVisibilityGreaterThan()) {
-                temp += "\n     Visibility : Greater than "
-                        + visibilityGroup.getVisibility() + " mile(s), "
-                        + visibilityGroup.getVisibilityKilometers() + " km(s)";
-            } else if (!visibilityGroup.isVisibilityLessThan()) {
-                temp += "\n     Visibility : "
-                        + visibilityGroup.getVisibility() + " mile(s), "
-                        + visibilityGroup.getVisibilityKilometers() + " km(s)";
-            } else {
-                temp += "\n     Visibility : Less than "
-                        + visibilityGroup.getVisibility() + " mile(s), "
-                        + visibilityGroup.getVisibilityKilometers() + " km(s)";
-            }
+        appendWindDirection(result);
+        appendWindSpeed(result);
+        appendWindGusts(result);
+    }
+
+    /**
+     * Append wind direction information
+     *
+     * @param result the StringBuilder to append to
+     */
+    private void appendWindDirection(StringBuilder result) {
+        if (windGroup.isWindDirectionIsVariable()) {
+            result.append("\n     Wind Direction is variable");
+        } else if (windGroup.isWindDirectionIsVarGtrSix()) {
+            result.append("\n     Wind Direction is variable (greater than 6 knots)");
+            result.append("  Variable between ")
+                  .append(windGroup.getwindDirectionVarOneCompass())
+                  .append(" and ")
+                  .append(windGroup.getwindDirectionVarTwoCompass())
+                  .append(" (")
+                  .append(windGroup.getWindDirectionVarOne())
+                  .append(" degrees and ")
+                  .append(windGroup.getWindDirectionVarTwo())
+                  .append(" degrees)");
+        } else {
+            result.append("\n     Wind dir : ")
+                  .append(windGroup.getWindDirectionCompass())
+                  .append(" (")
+                  .append(windGroup.getWindDirection())
+                  .append(" degrees)");
+        }
+    }
+
+    /**
+     * Append wind speed information
+     *
+     * @param result the StringBuilder to append to
+     */
+    private void appendWindSpeed(StringBuilder result) {
+        result.append("\n     Wind speed : ")
+              .append(windGroup.getWindSpeedInMPH())
+              .append(" mph, ")
+              .append(windGroup.getWindSpeedInKnots())
+              .append(" knots");
+    }
+
+    /**
+     * Append wind gust information
+     *
+     * @param result the StringBuilder to append to
+     */
+    private void appendWindGusts(StringBuilder result) {
+        result.append("\n     Wind gusts : ")
+              .append(windGroup.getWindGustsInMPH())
+              .append(" mph, ")
+              .append(windGroup.getWindGustsInKnots())
+              .append(" knots");
+    }
+
+    /**
+     * Append visibility information to the result string
+     *
+     * @param result the StringBuilder to append to
+     */
+    private void appendVisibilityInfo(StringBuilder result) {
+        if (visibilityGroup == null) {
+            return;
         }
 
-        if (pressureGroup != null) {
-            if (pressureGroup.getPressure() == null) {
-                temp += "\n     Pressure   : The pressure cannot be determined";
-            } else {
-                temp += "\n     Pressure   : "
-                        + pressureGroup.getPressure() + " in Hg, "
-                        + pressureGroup.getPressureInHectoPascals() + " in hPa";
-            }
+        
+        
+
+        if (visibilityGroup.isCavok()) {
+            result.append("\n     Visibility : ").append(MSG_WEATHER_DECODED_CAVOK);
+        } else if (visibilityGroup.isVisibilityGreaterThan()) {
+            result.append("\n     Visibility : Greater than ")
+                  .append(visibilityGroup.getVisibility())
+                  .append(" ")
+                  .append(MSG_MSRMNT_DECODED_MILES)
+                  .append(", ")
+                  .append(visibilityGroup.getVisibilityKilometers())
+                  .append(" ")
+                  .append(MSG_MSRMNT_DECODED_KILOMETERS);
+        } else if (visibilityGroup.isVisibilityLessThan()) {
+            result.append("\n     Visibility : Less than ")
+                  .append(visibilityGroup.getVisibility())
+                  .append(" ")
+                  .append(MSG_MSRMNT_DECODED_MILES)
+                  .append(", ")
+                  .append(visibilityGroup.getVisibilityKilometers())
+                  .append(" ")
+                  .append(MSG_MSRMNT_DECODED_KILOMETERS);
+        } else {
+            result.append("\n     Visibility : ")
+                  .append(visibilityGroup.getVisibility())
+                  .append(" ")
+                  .append(MSG_MSRMNT_DECODED_MILES)
+                  .append(", ")
+                  .append(visibilityGroup.getVisibilityKilometers())
+                  .append(" ")
+                  .append(MSG_MSRMNT_DECODED_KILOMETERS);
+        }
+    }
+
+    /**
+     * Append pressure information to the result string
+     *
+     * @param result the StringBuilder to append to
+     */
+    private void appendPressureInfo(StringBuilder result) {
+        if (pressureGroup == null) {
+            return;
         }
 
-        if (skyConditionGroup != null) {
-            temp += "\n\n     Total sky conditions: "
-                    + skyConditionsGroup.size();
+        if (pressureGroup.getPressure() == null) {
+            result.append("\n     Pressure   : The pressure cannot be determined");
+        } else {
+            result.append("\n     Pressure   : ")
+                  .append(pressureGroup.getPressure())
+                  .append(" in Hg, ")
+                  .append(pressureGroup.getPressureInHectoPascals())
+                  .append(" in hPa");
+        }
+    }
 
-            List<String> skyCondList
-                    = new ArrayList<>(skyConditionsGroup.values());
-            Collections.sort(skyCondList);
-            temp = skyCondList.stream().map((value)
-                    -> "\n     Value: " + value.substring(2)).reduce(temp, String::concat);
+    /**
+     * Append sky conditions information to the result string
+     *
+     * @param result the StringBuilder to append to
+     */
+    private void appendSkyConditionsInfo(StringBuilder result) {
+        if (skyConditionGroup == null) {
+            return;
         }
 
-        if (weatherConditionsGroup != null) {
-            temp += "\n\n     Total weather conditions: "
-                    + weatherConditionsGroup.size();
+        result.append("\n\n     Total sky conditions: ").append(skyConditionsGroup.size());
 
-            List<String> skyCondList
-                    = new ArrayList<>(weatherConditionsGroup.values());
-            Collections.sort(skyCondList);
-            temp = skyCondList.stream().map((value)
-                    -> "\n     Value: " + value).reduce(temp, String::concat);
+        List<String> skyCondList = new ArrayList<>(skyConditionsGroup.values());
+        Collections.sort(skyCondList);
+
+        for (String value : skyCondList) {
+            result.append("\n     Value: ").append(value.substring(2));
+        }
+    }
+
+    /**
+     * Append weather conditions information to the result string
+     *
+     * @param result the StringBuilder to append to
+     */
+    private void appendWeatherConditionsInfo(StringBuilder result) {
+        if (weatherConditionsGroup == null) {
+            return;
         }
 
+        result.append("\n\n     Total weather conditions: ").append(weatherConditionsGroup.size());
+
+        List<String> weatherCondList = new ArrayList<>(weatherConditionsGroup.values());
+        Collections.sort(weatherCondList);
+
+        for (String value : weatherCondList) {
+            result.append("\n     Value: ").append(value);
+        }
+    }
+
+    /**
+     * Append unparsed data information to the result string
+     *
+     * @param result the StringBuilder to append to
+     */
+    private void appendUnparsedDataInfo(StringBuilder result) {
         if (parseString != null) {
-            temp += "\n\n     Unparsed Data is as follows";
-            temp += "\n     " + parseString;
+            result.append("\n\n     Unparsed Data is as follows");
+            result.append("\n     ").append(parseString);
         } else {
-            temp += "\n\n     There is no unparsed data for this";
+            result.append("\n\n     There is no unparsed data for this");
         }
-
-        temp += "\n";
-
-        return temp;
     }
 
     /**
@@ -531,7 +847,7 @@ public class Group {
      * @param token
      */
     public void setParseString(Matcher token) {
-        LOGGER.debug("Unparsed: #" + token.group("unparsed") + "#");
-        this.parseString.add(token.group("unparsed"));
+        LOGGER.debug("Unparsed: #" + token.group(GROUP_UNPARSED) + "#");
+        this.parseString.add(token.group(GROUP_UNPARSED));
     }
 }

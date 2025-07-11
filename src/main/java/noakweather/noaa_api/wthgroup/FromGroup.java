@@ -34,6 +34,10 @@ public class FromGroup extends Group {
     private static final Logger LOGGER
             = LogManager.getLogger(FromGroup.class.getName());
 
+    // Config string constant to fix conditional method invocation
+    private static final String MSG_EXTENDED_DECODED_FM = 
+        Configs.getInstance().getString("EXTENDED_DECODED_FM");
+
     public FromGroup() {
         LOGGER.debug("in FromGroup constructor");
     }
@@ -42,21 +46,21 @@ public class FromGroup extends Group {
      * Set the from group information and return the natural language in human
      * readable form
      *
-     * @param daytime
-     * @param token
-     * @param monthString
-     * @param yearString
-     * @param groupWeathHandlers
-     * @return index
-     * @throws noakweather.utils.UtilsException
+     * @param daytime the daytime to for date processing
+     * @param token the weather token to process
+     * @param monthString the month string for date processing
+     * @param yearString the year string for date processing
+     * @param groupWeathHandlers map of regex patterns to their corresponding handler information
+     * @return natural language string representation of the from group conditions
+     * @throws noakweather.utils.UtilsException if error occurs during pattern processing
      */
     public String setFromGroupItems(String daytime, String token, String monthString, String yearString,
             IndexedLinkedHashMap<Pattern, Pair<String, Boolean>> groupWeathHandlers) throws UtilsException {
 
-        LOGGER.debug("Inside setFromGroupItems daytime processing: #" + daytime + "#");
-        LOGGER.debug("Inside setFromGroupItems token processing: #" + token + "#");
-        LOGGER.debug("Inside setFromGroupItems monthString: #" + monthString + "#");
-        LOGGER.debug("Inside setFromGroupItems yearString: #" + yearString + "#\n");
+        LOGGER.debug("Inside setFromGroupItems daytime processing: #{}", daytime);
+        LOGGER.debug("Inside setFromGroupItems token processing: #{}", token);
+        LOGGER.debug("Inside setFromGroupItems monthString: #{}", monthString);
+        LOGGER.debug("Inside setFromGroupItems yearString: #{}\n", yearString);
 
         setMonthString(monthString);
         setYearString(yearString);
@@ -64,7 +68,6 @@ public class FromGroup extends Group {
 
         parseGroupHandlers(token, groupWeathHandlers);
 
-        return getNaturalLanguageString(Configs.getInstance()
-                .getString("EXTENDED_DECODED_FM"));
+        return getNaturalLanguageString(MSG_EXTENDED_DECODED_FM);
     }
 }
