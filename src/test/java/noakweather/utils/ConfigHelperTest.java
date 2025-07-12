@@ -23,10 +23,10 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * Author: quark95cos Since: Copyright(c) 2025
  */
-public class ConfigHelperTest {
+class ConfigHelperTest {
     
     @Test
-    public void testGetConfigValue_WithNullKey_ThrowsNullPointerException() {
+    void testGetConfigValue_WithNullKey_ThrowsNullPointerException() {
         // Test null handling - this works without any config setup
         NullPointerException exception = assertThrows(
             NullPointerException.class,
@@ -37,7 +37,7 @@ public class ConfigHelperTest {
     }
     
     @Test
-    public void testEnumsImplementConfigKeyCorrectly() {
+    void testEnumsImplementConfigKeyCorrectly() {
         // Test that all enums properly implement ConfigKey interface
         // and return non-null, non-empty keys
         
@@ -63,7 +63,7 @@ public class ConfigHelperTest {
     }
     
     @Test
-    public void testAllEnumValuesHaveValidKeys() {
+    void testAllEnumValuesHaveValidKeys() {
         // Test that all enum values have proper keys
         
         // Test a few values from each enum to ensure consistency
@@ -89,7 +89,7 @@ public class ConfigHelperTest {
     }
     
     @Test
-    public void testConfigKeyInterfaceContract() {
+    void testConfigKeyInterfaceContract() {
         // Test that enums properly implement ConfigKey interface
         ConfigKey weatherKey = WeatherConfigKeys.LIGHT;
         ConfigKey cloudKey = CloudConfigKeys.CUMULUS;
@@ -107,7 +107,7 @@ public class ConfigHelperTest {
     }
     
     @Test
-    public void testConfigHelper_NullSafetyWithDifferentEnums() {
+    void testConfigHelper_NullSafetyWithDifferentEnums() {
         // Test that ConfigHelper properly handles the Objects.requireNonNull
         // for different enum types (without actually calling Configs)
         
