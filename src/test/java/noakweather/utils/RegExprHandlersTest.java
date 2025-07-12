@@ -15,6 +15,8 @@
  */
 package noakweather.utils;
 
+import java.util.regex.Pattern;
+import org.javatuples.Pair;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -153,8 +155,20 @@ class RegExprHandlersTest {
             .filter(field -> field.getType() == String.class)
             .count();
         
-        // Should have many string constants for handler names
+        // Should have handler name constants defined (found: " + constantFields + ")");
         assertTrue(constantFields > 20, 
             "Should have handler name constants defined (found: " + constantFields + ")");
+    }
+    
+    @Test
+    void testUtilityClassCannotBeInstantiated() {
+        // Test that the utility class has a private constructor
+        try {
+            java.lang.reflect.Constructor<?> constructor = RegExprHandlers.class.getDeclaredConstructor();
+            assertTrue(java.lang.reflect.Modifier.isPrivate(constructor.getModifiers()),
+                "Constructor should be private for utility class");
+        } catch (NoSuchMethodException e) {
+            fail("Default constructor not found");
+        }
     }
 }

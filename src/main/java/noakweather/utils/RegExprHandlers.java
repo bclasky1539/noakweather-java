@@ -117,10 +117,12 @@ public final class RegExprHandlers {
         mainHandlers.put(RegExprConst.NO_SIG_CHANGE_PATTERN,
                 Pair.with(HANDLER_NO_SIG_CHANGE, false));
 
-        LOGGER.debug("\n");
-        LOGGER.debug(Configs.getInstance().getString(CONFIG_MAIN_HANDLERS));
-        mainHandlers.forEach((k, v) -> LOGGER.debug((k + ":" + v)));
-        LOGGER.debug(Configs.getInstance().getString(CONFIG_MAIN_HANDLERS) + "\n");
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("\n");
+            LOGGER.debug(Configs.getInstance().getString(CONFIG_MAIN_HANDLERS));
+            mainHandlers.forEach((k, v) -> LOGGER.debug("{}:{}", k, v));
+            LOGGER.debug("{}\n", Configs.getInstance().getString(CONFIG_MAIN_HANDLERS));
+        }
 
         return mainHandlers;
     }
@@ -189,10 +191,12 @@ public final class RegExprHandlers {
         remarkHandlers.put(RegExprConst.UNPARSED_PATTERN,
                 Pair.with(HANDLER_UNPARSED, false));
 
-        LOGGER.debug("\n");
-        LOGGER.debug(Configs.getInstance().getString(CONFIG_REMARKS_HANDLERS));
-        remarkHandlers.forEach((k, v) -> LOGGER.debug((k + ":" + v)));
-        LOGGER.debug(Configs.getInstance().getString(CONFIG_REMARKS_HANDLERS) + "\n");
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("\n");
+            LOGGER.debug(Configs.getInstance().getString(CONFIG_REMARKS_HANDLERS));
+            remarkHandlers.forEach((k, v) -> LOGGER.debug("{}:{}", k, v));
+            LOGGER.debug("{}\n", Configs.getInstance().getString(CONFIG_REMARKS_HANDLERS));
+        }
 
         return remarkHandlers;
     }
@@ -226,10 +230,12 @@ public final class RegExprHandlers {
         groupHandlers.put(RegExprConst.UNPARSED_PATTERN,
                 Pair.with(HANDLER_UNPARSED, false));
 
-        LOGGER.debug("\n");
-        LOGGER.debug(Configs.getInstance().getString(CONFIG_GROUPS_HANDLERS));
-        groupHandlers.forEach((k, v) -> LOGGER.debug((k + ":" + v)));
-        LOGGER.debug(Configs.getInstance().getString(CONFIG_GROUPS_HANDLERS) + "\n");
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("\n");
+            LOGGER.debug(Configs.getInstance().getString(CONFIG_GROUPS_HANDLERS));
+            groupHandlers.forEach((k, v) -> LOGGER.debug("{}:{}", k, v));
+            LOGGER.debug("{}\n", Configs.getInstance().getString(CONFIG_GROUPS_HANDLERS));
+        }
 
         return groupHandlers;
     }
