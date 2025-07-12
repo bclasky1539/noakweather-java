@@ -397,6 +397,15 @@ enum SensorStatusConfigKeys implements ConfigKey {
  * Author: quark95cos Since: Copyright(c) 2025
  */
 class ConfigHelper {
+    
+    /**
+     * Private constructor to prevent instantiation of utility class
+     *
+     */
+    private ConfigHelper() {
+        // Utility class - not meant to be instantiated
+    }
+
     /**
      * Gets configuration value for the given config key.
      * 

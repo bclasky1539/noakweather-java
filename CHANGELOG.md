@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.2.6 - Date: July 11, 2025
+
+- SonarCloud maintainability issues in WthItemHandlers and RegExprHandlers classes
+
 ## Version 0.2.5 - Date: July 11, 2025
 
 - SonarCloud maintainability issues in WthItemHandlers class
