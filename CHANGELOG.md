@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.2.7 - Date: July 12, 2025
+
+- SonarCloud maintainability issues in RegExprHandlers, WeatherCondHttpClient and NOAAUrl classes
+
 ## Version 0.2.6 - Date: July 11, 2025
 
 - SonarCloud maintainability issues in WthItemHandlers and RegExprHandlers classes
